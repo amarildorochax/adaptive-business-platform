@@ -5,7 +5,7 @@ import { squadWatcherPlugin } from "./src/plugin/squadWatcher";
 
 export default defineConfig({
   plugins: [react(), squadWatcherPlugin()],
-  server: { port: 3738 },
+  server: { port: 3738, host: true },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

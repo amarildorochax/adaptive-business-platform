@@ -79,7 +79,7 @@ export class AgentWorker {
       frame: this.sprite.frame.name,
     });
 
-    this.sprite.setDepth(5);
+    this.sprite.setDepth(15);
 
     console.log(
       "[4] animação:",
