@@ -1,0 +1,45 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "ArkPixel";
+  src: url("/fonts/ark-pixel-12px.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg-primary: #1a1814;
+  --bg-secondary: #252219;
+  --bg-sidebar: #141210;
+  --border: #2a2a3e;
+  --text-primary: #e8e2d8;
+  --text-secondary: #a09888;
+  --accent-cyan: #00d4ff;
+  --accent-green: #4ade80;
+  --accent-amber: #facc15;
+  --accent-red: #ef4444;
+  --accent-gold: #c9a227;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}

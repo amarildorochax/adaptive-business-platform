@@ -1,0 +1,29 @@
+.container{
+
+    display:flex;
+
+    flex-direction:column;
+
+    background:#0F172A;
+
+    padding:18px;
+
+    overflow:hidden;
+
+}
+
+.scene{
+
+    flex:1;
+
+    background:#1E293B;
+
+    border:1px solid #334155;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 35px rgba(0,0,0,.30);
+
+}
