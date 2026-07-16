@@ -35,17 +35,18 @@ export class AgentWorker {
     agentIcon: string,
     facing: Direction = "down",
   ) {
-
     console.log("=================================");
     console.log("[AgentWorker] NOVO AGENTE");
-    console.log({
-      agentName,
-      spriteKey,
-      seatId,
-      x,
-      y,
-      facing,
-    });
+
+    console.log(
+      "[POSIÇÃO]",
+      "nome =", agentName,
+      "| sprite =", spriteKey,
+      "| seat =", seatId,
+      "| x =", x,
+      "| y =", y,
+      "| facing =", facing
+    );
 
     this.scene = scene;
     this.seatId = seatId;
@@ -55,8 +56,10 @@ export class AgentWorker {
 
     this.ensureAnims(scene, spriteKey);
 
-    console.log("[2] texture existe?",
-      scene.textures.exists(spriteKey));
+    console.log(
+      "[2] texture existe?",
+      scene.textures.exists(spriteKey)
+    );
 
     this.sprite = scene.add.sprite(
       x,
@@ -67,16 +70,32 @@ export class AgentWorker {
 
     console.log("[3] sprite criado");
 
+    console.log("[SPRITE]", {
+      x: this.sprite.x,
+      y: this.sprite.y,
+      visible: this.sprite.visible,
+      alpha: this.sprite.alpha,
+      depth: this.sprite.depth,
+      frame: this.sprite.frame.name,
+    });
+
     this.sprite.setDepth(5);
 
-    console.log("[4] animação:",
-      `${spriteKey}:idle-${facing}`);
+    console.log(
+      "[4] animação:",
+      `${spriteKey}:idle-${facing}`
+    );
 
     this.sprite.anims.play(
       `${spriteKey}:idle-${facing}`
     );
 
     console.log("[5] animação aplicada");
+
+    console.log(
+      "[ANIMAÇÃO]",
+      this.sprite.anims.currentAnim?.key
+    );
 
     const nameY = y + FRAME_HEIGHT / 2 + 2;
 
@@ -150,15 +169,9 @@ export class AgentWorker {
       ...idleAnims,
       ...walkAnims,
     ]) {
-      const frames:
-        Phaser.Types.Animations.AnimationFrame[] =
-        [];
+      const frames: Phaser.Types.Animations.AnimationFrame[] = [];
 
-      for (
-        let i = anim.start;
-        i <= anim.end;
-        i++
-      ) {
+      for (let i = anim.start; i <= anim.end; i++) {
         frames.push({
           key: spriteKey,
           frame: i,
@@ -175,17 +188,12 @@ export class AgentWorker {
   }
 
   private initEmoteSprite() {
-    if (
-      !this.scene.textures.exists(
-        EMOTE_SHEET_KEY
-      )
-    )
+    if (!this.scene.textures.exists(EMOTE_SHEET_KEY))
       return;
 
     this.emoteSprite = this.scene.add.sprite(
       this.sprite.x,
-      this.sprite.y -
-        FRAME_HEIGHT * EMOTE_Y_OFFSET,
+      this.sprite.y - FRAME_HEIGHT * EMOTE_Y_OFFSET,
       EMOTE_SHEET_KEY,
       0
     );
@@ -194,9 +202,7 @@ export class AgentWorker {
     this.emoteSprite.setVisible(false);
 
     for (const def of EMOTE_ANIMS) {
-      if (
-        this.scene.anims.exists(def.key)
-      )
+      if (this.scene.anims.exists(def.key))
         continue;
 
       this.scene.anims.create({
@@ -220,12 +226,9 @@ export class AgentWorker {
       checkpoint: 0xf59e0b,
     };
 
-    this.statusDot.setFillStyle(
-      colors[status]
-    );
+    this.statusDot.setFillStyle(colors[status]);
 
-    const emote =
-      STATUS_EMOTE_MAP[status];
+    const emote = STATUS_EMOTE_MAP[status];
 
     if (emote) {
       this.showEmote(emote);
@@ -237,15 +240,12 @@ export class AgentWorker {
   showEmote(emoteKey: string) {
     if (!this.emoteSprite) return;
 
-    if (
-      this.currentEmoteKey === emoteKey
-    )
+    if (this.currentEmoteKey === emoteKey)
       return;
 
     this.currentEmoteKey = emoteKey;
 
     this.emoteSprite.setVisible(true);
-
     this.emoteSprite.play(emoteKey);
   }
 

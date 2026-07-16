@@ -28,7 +28,11 @@
       "Bash(chromium-cli --help)",
       "PowerShell(wsl.exe -e bash -lc \"which chromium-cli 2>&1; ls /home/w10/Documents/Squads100/dashboard-andreia/node_modules/.bin/ 2>/dev/null | grep -i playwright; cat /home/w10/Documents/Squads100/dashboard-andreia/.mcp.json 2>/dev/null\")",
       "Bash(grep -n \"Math.max\\(Math.round\\(width \\\\* this.scale\\)\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/phaser/dist/phaser.js\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/phaser/dist/phaser.esm.js\")",
-      "PowerShell(wsl.exe -e bash -lc \"cd /home/w10/Documents/Squads100/dashboard-andreia && rm -rf node_modules/phaser && npm install phaser@3.90.0 --no-save 2>&1 | tail -5 && npx patch-package 2>&1\")"
+      "PowerShell(wsl.exe -e bash -lc \"cd /home/w10/Documents/Squads100/dashboard-andreia && rm -rf node_modules/phaser && npm install phaser@3.90.0 --no-save 2>&1 | tail -5 && npx patch-package 2>&1\")",
+      "Bash(grep -c \"Math.max\\(Math.round\\(width \\\\* this.scale\\)\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/phaser/dist/phaser.js\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/phaser/dist/phaser.esm.js\")",
+      "PowerShell(wsl.exe -e bash -lc \"cd /home/w10/Documents/Squads100/dashboard-andreia && rm -rf node_modules/.vite && pkill -f vite 2>/dev/null; sleep 1; \\(npm run dev > /tmp/vite-dev.log 2>&1 &\\) ; sleep 4; cat /tmp/vite-dev.log\")",
+      "PowerShell(wsl.exe -e bash -lc \"cat /tmp/vite-dev.log 2>&1; echo ---procs---; ps aux | grep -i node | grep -v grep\")",
+      "PowerShell(wsl.exe -e bash -lc \"fuser -k 3739/tcp 2>&1; true\")"
     ]
   }
 }
