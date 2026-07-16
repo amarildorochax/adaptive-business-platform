@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(export HOME=/tmp)",
+      "Bash(git config *)",
+      "Bash(git -C \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia\" log --oneline -20)",
+      "Bash(echo ---STATUS---)",
+      "Bash(git -C \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia\" status)",
+      "Read(///wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/src/components/**)",
+      "Bash(xargs -I{} sh -c 'echo ===={}====; cat \"{}\"')",
+      "Read(///wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/**)",
+      "Read(///wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/phaser/**)",
+      "Bash(find \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/phaser\" -maxdepth 1 -iname \"CHANGELOG*\")",
+      "Read(///wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/**)",
+      "Read(///wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/phaser/dist/**)",
+      "Read(///wsl.localhost/Ubuntu/home/w10/Documents/Squads100/**)",
+      "Bash(npm install *)",
+      "PowerShell(wsl.exe -e bash -lc \"cd /home/w10/Documents/Squads100/dashboard-andreia && grep -n patch-package package.json\")",
+      "PowerShell(wsl.exe -e bash -lc \"cd /home/w10/Documents/Squads100/dashboard-andreia && npx patch-package phaser 2>&1\")",
+      "PowerShell(wsl.exe -e bash -lc \"cd /home/w10/Documents/Squads100/dashboard-andreia && rm -rf node_modules/.vite && echo cache-cleared\")",
+      "PowerShell(wsl.exe -e bash -lc \"cd /home/w10/Documents/Squads100/dashboard-andreia && nohup npm run dev > /tmp/vite-dev.log 2>&1 & sleep 4; cat /tmp/vite-dev.log\")",
+      "PowerShell(wsl.exe -e bash -lc \"pkill -f 'vite' 2>&1; sleep 1; ps aux | grep -i vite | grep -v grep\")",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Read(///wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/.claude/skills/\\\\*/**)",
+      "Read(///wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/.claude/**)",
+      "Bash(d=\"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia\"; find \"$d/.claude\" -maxdepth 3 2>&1 | head -30)",
+      "Bash(chromium-cli --help)",
+      "PowerShell(wsl.exe -e bash -lc \"which chromium-cli 2>&1; ls /home/w10/Documents/Squads100/dashboard-andreia/node_modules/.bin/ 2>/dev/null | grep -i playwright; cat /home/w10/Documents/Squads100/dashboard-andreia/.mcp.json 2>/dev/null\")",
+      "Bash(grep -n \"Math.max\\(Math.round\\(width \\\\* this.scale\\)\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/phaser/dist/phaser.js\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/node_modules/phaser/dist/phaser.esm.js\")",
+      "PowerShell(wsl.exe -e bash -lc \"cd /home/w10/Documents/Squads100/dashboard-andreia && rm -rf node_modules/phaser && npm install phaser@3.90.0 --no-save 2>&1 | tail -5 && npx patch-package 2>&1\")"
+    ]
+  }
+}

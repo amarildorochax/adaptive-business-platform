@@ -21,10 +21,25 @@ export default function PhaserGame() {
 
       if (!mounted) return;
 
+      console.log("[PhaserGame] Container:", containerRef.current);
+
+      console.log(
+        "[PhaserGame] Size:",
+        containerRef.current.clientWidth,
+        containerRef.current.clientHeight
+      );
+
       const game = new Phaser.Game({
         ...gameConfig,
         parent: containerRef.current,
       });
+
+      console.log(
+        "[PhaserGame] Canvas:",
+        game.canvas.width,
+        game.canvas.height
+      );
+
       gameRef.current = game;
     }
 
@@ -34,6 +49,7 @@ export default function PhaserGame() {
 
     return () => {
       mounted = false;
+
       if (gameRef.current) {
         gameRef.current.destroy(true);
         gameRef.current = null;

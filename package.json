@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@pixi/react": "^8.0.5",
@@ -23,6 +24,7 @@
     "@types/react-dom": "^19.1.2",
     "@types/ws": "^8.18.1",
     "@vitejs/plugin-react": "^4.5.2",
+    "patch-package": "^8.0.1",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
     "ws": "^8.18.1"

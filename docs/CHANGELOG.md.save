@@ -1,0 +1,20 @@
+# CHANGELOG
+
+## v0.1 - Dashboard compilando
+
+Data: 15/07/2026
+
+### Concluído
+
+- Projeto recuperado
+- OfficeScene restaurada
+- Build funcionando
+- WebSocket funcionando
+- Snapshot funcionando
+- EventBridge funcionando
+- Sistema de backup criado
+- Git inicializado
+
+### Próxima etapa
+
+- Descobrir por que os AgentWorker não aparecem na tela.

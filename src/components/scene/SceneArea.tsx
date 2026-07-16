@@ -1,10 +1,22 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useRef } from "react";
 import { useSquadStore } from "@/store/useSquadStore";
 import { ArtifactPanel } from "@/components/ArtifactPanel";
 
 const PhaserGame = lazy(() => import("@/game/PhaserGame"));
 
 export function SceneArea() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (wrapperRef.current) {
+      console.log(
+        "[SceneArea] Wrapper:",
+        wrapperRef.current.clientWidth,
+        wrapperRef.current.clientHeight
+      );
+    }
+  }, []);
+
   const selectedSquad = useSquadStore((s) => s.selectedSquad);
 
   const squadInfo = useSquadStore((s) =>
@@ -34,6 +46,7 @@ export function SceneArea() {
 
   return (
     <div
+      ref={wrapperRef}
       style={{
         width: "100%",
         height: "100%",
