@@ -13,6 +13,7 @@ import { buildSpriteFrames } from "../utils/MapHelpers";
 import type { AgentStatus } from "@/types/state";
 
 const EMOTE_Y_OFFSET = 0.7;
+const MOVE_SPEED = 120;
 
 export class AgentWorker {
   sprite: Phaser.GameObjects.Sprite;
@@ -24,6 +25,11 @@ export class AgentWorker {
   private statusDot: Phaser.GameObjects.Arc;
   private emoteSprite: Phaser.GameObjects.Sprite | null = null;
   private currentEmoteKey: string | null = null;
+  private homeX: number;
+  private homeY: number;
+  private moving = false;
+  private facing: Direction;
+  private moveTween?: Phaser.Tweens.Tween;
 
   constructor(
     scene: Phaser.Scene,
@@ -51,6 +57,9 @@ export class AgentWorker {
     this.scene = scene;
     this.seatId = seatId;
     this.spriteKey = spriteKey;
+    this.homeX = x;
+    this.homeY = y;
+    this.facing = facing;
 
     console.log("[1] ensureAnims");
 
@@ -138,6 +147,79 @@ export class AgentWorker {
     console.log("=================================");
   }
 
+  // Movement
+
+  moveTo(x: number, y: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const dx = x - this.sprite.x;
+      const dy = y - this.sprite.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < 1) {
+        resolve();
+        return;
+      }
+
+      const direction = this.getDirection(dx, dy);
+      this.facing = direction;
+
+      if (this.moveTween) {
+        this.moveTween.stop();
+        this.moveTween = undefined;
+      }
+
+      this.moving = true;
+      this.sprite.anims.play(`${this.spriteKey}:walk-${direction}`);
+
+      this.moveTween = this.scene.tweens.add({
+        targets: this.sprite,
+        x,
+        y,
+        duration: (distance / MOVE_SPEED) * 1000,
+        onUpdate: () => this.updateAttachments(),
+        onComplete: () => {
+          this.moving = false;
+          this.moveTween = undefined;
+          this.sprite.anims.play(`${this.spriteKey}:idle-${direction}`);
+          this.updateAttachments();
+          resolve();
+        },
+      });
+    });
+  }
+
+  moveHome(): Promise<void> {
+    return this.moveTo(this.homeX, this.homeY);
+  }
+
+  moveToPoint(point: { x: number; y: number }): Promise<void> {
+    return this.moveTo(point.x, point.y);
+  }
+
+  getFacing(): Direction {
+    return this.facing;
+  }
+
+  isMoving(): boolean {
+    return this.moving;
+  }
+
+  getPosition() {
+    return {
+      x: this.sprite.x,
+      y: this.sprite.y,
+    };
+  }
+
+  private getDirection(dx: number, dy: number): Direction {
+    if (Math.abs(dx) > Math.abs(dy)) {
+      return dx > 0 ? "right" : "left";
+    }
+    return dy > 0 ? "down" : "up";
+  }
+
+  // Animation
+
   private ensureAnims(
     scene: Phaser.Scene,
     spriteKey: string
@@ -217,6 +299,8 @@ export class AgentWorker {
     }
   }
 
+  // UI
+
   setStatus(status: AgentStatus) {
     const colors = {
       idle: 0x888888,
@@ -257,7 +341,30 @@ export class AgentWorker {
     this.currentEmoteKey = null;
   }
 
+  private updateAttachments() {
+    const nameY = this.sprite.y + FRAME_HEIGHT / 2 + 2;
+
+    this.nameTag.setPosition(this.sprite.x, nameY);
+
+    this.statusDot.setPosition(
+      this.sprite.x - this.nameTag.width / 2 - 6,
+      nameY + 4
+    );
+
+    this.emoteSprite?.setPosition(
+      this.sprite.x,
+      this.sprite.y - FRAME_HEIGHT * EMOTE_Y_OFFSET
+    );
+  }
+
+  // Helpers
+
   destroy() {
+    if (this.moveTween) {
+      this.moveTween.stop();
+      this.moveTween = undefined;
+    }
+
     this.emoteSprite?.destroy();
     this.sprite.destroy();
     this.nameTag.destroy();
