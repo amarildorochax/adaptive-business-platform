@@ -21,6 +21,16 @@ build/
 # ==========================
 .vscode/
 .idea/
+.cursor/
+.windsurf/
+
+# ==========================
+# AI assistant local state
+# (settings.local.json holds per-machine tool-permission grants,
+#  not project configuration — already tracked historically;
+#  see REPOSITORY_BASELINE_REPORT.md for the untracking recommendation)
+# ==========================
+.claude/settings.local.json
 
 # ==========================
 # Logs
@@ -53,3 +63,14 @@ coverage/
 # ==========================
 *.tmp
 *.temp
+*.tmp.*
+
+# ==========================
+# Archives / exports
+# (ad hoc project exports and compressed backups do not belong in
+#  version control — see REPOSITORY_BASELINE_REPORT.md)
+# ==========================
+*.zip
+*.rar
+*.7z
+*.tar.gz
