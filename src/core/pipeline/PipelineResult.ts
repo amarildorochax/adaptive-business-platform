@@ -1,26 +1,18 @@
-// PipelineResult.ts
-//
-// Responsabilidade:
-// Representa o resultado da execução de qualquer Pipeline. É a versão
-// genérica do conceito que nasceu como BootResult na Sprint A.4 —
-// mesmos campos, para que qualquer pipeline futuro (Boot, Lifecycle,
-// Shutdown, Update, Migration, Plugin, Install...) reporte resultado no
-// mesmo formato.
-//
-// Todas as propriedades já nascem inicializadas com um valor neutro
-// (nenhuma fica `undefined`), para que um PipelineResult recém-criado já
-// seja um valor válido e utilizável mesmo antes de qualquer etapa ser
-// executada — é exatamente o que Pipeline.execute() retorna nesta
-// Sprint, sem rodar nenhuma etapa.
-//
-// Nenhuma lógica de cálculo de sucesso/erro existe aqui.
-
+/**
+ * Resultado da execução de um Pipeline — sempre um valor válido e
+ * utilizável, mesmo antes de qualquer etapa ser executada (nenhuma
+ * propriedade fica `undefined`).
+ */
 export class PipelineResult {
+  /** `true` se todas as etapas executaram sem lançar exceção. */
   success: boolean = false;
 
+  /** Mensagens de erro — no formato `"<nome-da-etapa>: <mensagem>"` quando a origem é conhecida. */
   errors: string[] = [];
 
+  /** Reservado para avisos não fatais — ainda não populado por Pipeline.execute(). */
   warnings: string[] = [];
 
+  /** Duração total da execução, em milissegundos. */
   duration: number = 0;
 }

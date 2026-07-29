@@ -123,7 +123,22 @@
       "Bash(grep -n \"Atualização e Aposentadoria\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/docs/ai/AGENT_FRAMEWORK.md\")",
       "Bash(wc -w \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/docs/ai/CONTEXT_FRAMEWORK.md\")",
       "Bash(grep -n \"^## 22\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/docs/ai/CONTEXT_FRAMEWORK.md\")",
-      "Bash(grep -n \"Context Ownership\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/docs/ai/CONTEXT_FRAMEWORK.md\")"
+      "Bash(grep -n \"Context Ownership\" \"//wsl.localhost/Ubuntu/home/w10/Documents/Squads100/dashboard-andreia/docs/ai/CONTEXT_FRAMEWORK.md\")",
+      "Bash(echo \"exit: $?\")",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\nodejs;C:\\\\Users\\\\Amarildo\\\\AppData\\\\Roaming\\\\npm;\" + $env:PATH; cd \"c:\\\\Users\\\\Amarildo\\\\adaptive-business-platform\"; npx tsc --noEmit)",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\nodejs;C:\\\\Users\\\\Amarildo\\\\AppData\\\\Roaming\\\\npm;\" + $env:PATH; cd \"c:\\\\Users\\\\Amarildo\\\\adaptive-business-platform\"; npx vite build)",
+      "Bash(rm -f index.ts README.md)",
+      "Bash(mkdir -p components widgets panels sections hooks services types mocks utils)",
+      "Bash(mkdir -p widgets/OverviewMetrics widgets/RecentActivities widgets/Notifications widgets/Agenda widgets/QuickActions widgets/AIInsights widgets/Performance widgets/SystemHealth)",
+      "Bash(grep -v \"^\\\\s*//\")",
+      "Bash(echo \"exit\\(should be empty\\): $?\")",
+      "Bash(grep -v \"^\\\\./.*:.*//\")",
+      "Bash(grep -v \"^.*//\")",
+      "Bash(grep -v \"//\")",
+      "Bash(grep -v \"// \")",
+      "Bash(git check-ignore *)",
+      "Bash(git reset *)",
+      "Bash(echo \"exit_code=$?\")"
     ]
   }
 }

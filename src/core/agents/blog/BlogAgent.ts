@@ -1,6 +1,11 @@
 import type { Agent } from "../registry/Agent";
 import { AgentStatus } from "../registry/AgentStatus";
 
+/**
+ * Definição estática do único Agent real registrado na plataforma hoje.
+ * Registrado por registerAgents.ts; executado por BlogAgentExecutor
+ * quando despachado via AgentDispatcher.
+ */
 export const BlogAgent: Agent = {
   id: "blog-agent",
 

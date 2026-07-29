@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "PowerShell(corepack --version)",
+      "Bash(grep -i \"Button\\\\|^Input$\\\\|^Card$\")",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\nodejs;C:\\\\Users\\\\Amarildo\\\\AppData\\\\Roaming\\\\npm;\" + $env:PATH; cd \"c:\\\\Users\\\\Amarildo\\\\adaptive-business-platform\"; npx tsc --noEmit)",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\nodejs;C:\\\\Users\\\\Amarildo\\\\AppData\\\\Roaming\\\\npm;\" + $env:PATH; cd \"c:\\\\Users\\\\Amarildo\\\\adaptive-business-platform\"; npx vite build)",
+      "Bash(grep -v -E \"^\\(App.tsx|components|config|core|design-system|game|hooks|layout|lib|main.tsx|modules|pages|plugin|providers|shared|store|styles|types|vite-env.d.ts\\)$\")",
+      "Bash(grep -rn \"from '.*\\\\/pages\" layouts shell primitives contexts providers shared features guards navigation)",
+      "Bash(grep -rn \"from '.*\\\\/features\" layouts shell primitives contexts providers shared pages router guards navigation)",
+      "Bash(grep -rln \"from '.*\\\\/router\" layouts shell primitives contexts providers shared pages features guards navigation)"
+    ]
+  }
+}

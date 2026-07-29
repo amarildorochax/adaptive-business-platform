@@ -1,0 +1,96 @@
+// clients.mock.ts
+//
+// Responsabilidade:
+// Dado simulado de Clientes/Contatos do CRM — vinculados a
+// `companies.mock.ts` via `companyId`, e a `tags.mock.ts` via `tagIds`.
+
+import type { Client } from '../types';
+
+export function generateClients(): Client[] {
+  return [
+    {
+      id: 'client-1',
+      name: 'Marina Ribeiro',
+      companyId: 'company-1',
+      role: 'Diretora de Operações',
+      phone: '(11) 98200-1010',
+      whatsapp: '(11) 98200-1010',
+      email: 'marina.ribeiro@fibracorp.com.br',
+      source: 'Indicação',
+      salesOwnerName: 'Ana Souza',
+      status: 'customer',
+      tagIds: ['tag-vip', 'tag-old-client'],
+      createdAt: '2026-02-10T10:05:00Z',
+    },
+    {
+      id: 'client-2',
+      name: 'Rodrigo Fontes',
+      companyId: 'company-2',
+      role: 'Gerente de Compras',
+      phone: '(19) 99255-2020',
+      whatsapp: '(19) 99255-2020',
+      email: 'rodrigo.fontes@grupoalfa.com.br',
+      source: 'Site',
+      salesOwnerName: 'Bruno Lima',
+      status: 'prospect',
+      tagIds: ['tag-urgent'],
+      createdAt: '2026-03-02T14:40:00Z',
+    },
+    {
+      id: 'client-3',
+      name: 'Juliana Prado',
+      companyId: 'company-3',
+      role: 'CTO',
+      phone: '(31) 99225-3030',
+      whatsapp: '(31) 99225-3030',
+      email: 'juliana.prado@betasolucoes.com.br',
+      source: 'Evento',
+      salesOwnerName: 'Carla Nunes',
+      status: 'customer',
+      tagIds: ['tag-partner'],
+      createdAt: '2026-04-18T09:20:00Z',
+    },
+    {
+      id: 'client-4',
+      name: 'Eduardo Martins',
+      companyId: 'company-4',
+      role: 'Diretor Financeiro',
+      phone: '(51) 99288-4040',
+      whatsapp: '(51) 99288-4040',
+      email: 'eduardo.martins@deltaeng.com.br',
+      source: 'Indicação',
+      salesOwnerName: 'Diego Alves',
+      status: 'inactive',
+      tagIds: [],
+      createdAt: '2026-01-25T11:50:00Z',
+    },
+    {
+      id: 'client-5',
+      name: 'Camila Torres',
+      companyId: 'company-5',
+      role: 'Sócia-fundadora',
+      phone: '(11) 99061-5050',
+      whatsapp: '(11) 99061-5050',
+      email: 'camila@novamarca.com.br',
+      source: 'Redes sociais',
+      salesOwnerName: 'Ana Souza',
+      status: 'prospect',
+      tagIds: ['tag-prospect'],
+      createdAt: '2026-05-30T16:25:00Z',
+    },
+    {
+      id: 'client-6',
+      name: 'Felipe Andrade',
+      companyId: null,
+      role: 'Consultor Independente',
+      phone: '(21) 98888-6060',
+      whatsapp: '(21) 98888-6060',
+      email: 'felipe.andrade@gmail.com',
+      source: 'LinkedIn',
+      salesOwnerName: 'Bruno Lima',
+      status: 'lead',
+      tagIds: ['tag-prospect'],
+      createdAt: '2026-06-14T13:10:00Z',
+    },
+  ];
+}

@@ -1,12 +1,15 @@
 
 import { createRoot } from "react-dom/client";
 
-import { App } from "./App";
+import { AppProviders } from "@/app/providers";
+import { AppRouter } from "@/app/router";
 import { startPlatform } from "./core/bootstrap/startPlatform";
 
 import "./styles/globals.css";
 
 startPlatform();
 createRoot(document.getElementById("root")!).render(
-  <App />
+  <AppProviders themeProps={{ defaultMode: "dark" }}>
+    <AppRouter />
+  </AppProviders>
 );

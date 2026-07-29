@@ -1,0 +1,18 @@
+{
+  "name": "@abp/root",
+  "private": true,
+  "packageManager": "pnpm@11.15.1",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @abp/web dev",
+    "build": "pnpm -r --if-present run build",
+    "lint": "pnpm -r --if-present run lint",
+    "format": "pnpm -r --if-present run format",
+    "typecheck": "pnpm -r --if-present run typecheck"
+  }
+}

@@ -29,14 +29,17 @@
 }
 
 html,
-body,
-#root {
-  height: 100%;
+body {
   width: 100%;
-  overflow: hidden;
+  min-height: 100%;
   font-family: "JetBrains Mono", "Fira Code", monospace;
   background: var(--bg-primary);
   color: var(--text-primary);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
 }
 
 @keyframes pulse {

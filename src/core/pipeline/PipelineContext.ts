@@ -1,35 +1,30 @@
-// PipelineContext.ts
-//
-// Responsabilidade:
-// Objeto de contexto compartilhado entre todas as etapas (PipelineStep)
-// de um Pipeline. É a versão genérica do conceito que nasceu como
-// BootContext na Sprint A.4 — qualquer pipeline futuro (Boot, Lifecycle,
-// Shutdown, Update, Migration, Plugin, Install...) reutiliza este mesmo
-// contêiner em vez de cada um definir o seu próprio.
-//
-// Nesta etapa é apenas um contêiner estrutural: nenhuma propriedade tem
-// tipo concreto. Tipar "runtime" como PlatformRuntime, por exemplo,
-// criaria uma dependência circular (PlatformRuntime -> BootPipeline ->
-// Pipeline -> PipelineStep -> PipelineContext -> PlatformRuntime).
-// Manter os tipos como `unknown` evita esse ciclo e mantém o
-// PipelineContext desacoplado de qualquer classe concreta da
-// plataforma.
-//
-// Nenhuma implementação, nenhum comportamento nesta etapa.
-
+/**
+ * Contêiner de contexto compartilhado entre todas as PipelineStep de um
+ * mesmo Pipeline (um novo PipelineContext é criado a cada
+ * `Pipeline.execute()`).
+ *
+ * Responsabilidade: dar às etapas um lugar comum para ler/escrever
+ * estado durante a execução do pipeline.
+ *
+ * Nota de projeto: os campos abaixo são `unknown` de propósito — tipá-los
+ * como classes concretas (ex.: `runtime: PlatformRuntime`) criaria uma
+ * dependência circular (PlatformRuntime -> BootPipeline -> Pipeline ->
+ * PipelineStep -> PipelineContext -> PlatformRuntime). Cada etapa
+ * concreta é responsável por fazer o narrowing de tipo necessário.
+ */
 export class PipelineContext {
-  // Representará futuramente a configuração da plataforma (ex.: PlatformConfig).
+  /** Representará futuramente a configuração da plataforma (ex.: PlatformConfig). */
   config?: unknown;
 
-  // Representará futuramente o registry da plataforma (ex.: PlatformRegistry).
+  /** Representará futuramente o registry da plataforma (ex.: PlatformRegistry). */
   registry?: unknown;
 
-  // Representará futuramente a instância de runtime (ex.: PlatformRuntime).
+  /** Representará futuramente a instância de runtime (ex.: PlatformRuntime). */
   runtime?: unknown;
 
-  // Representará futuramente os serviços registrados (ex.: ServiceRegistry).
+  /** Representará futuramente os serviços registrados (ex.: ServiceRegistry). */
   services?: unknown;
 
-  // Representará futuramente o ambiente de execução (ex.: "development").
+  /** Representará futuramente o ambiente de execução (ex.: "development"). */
   environment?: unknown;
 }

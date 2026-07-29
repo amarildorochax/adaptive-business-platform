@@ -1,0 +1,351 @@
+/*
+ * branding.css
+ *
+ * Responsabilidade:
+ * Motion Design e microinterações oficiais do Adaptive Design System
+ * (Sprint 29 — Branding). Toda duração/curva/raio/sombra usada aqui vem
+ * exclusivamente das custom properties `--ads-duration-*`,
+ * `--ads-easing-*`, `--ads-radius-*`, `--ads-shadow-*` — projetadas no
+ * DOM por `ThemeProvider` a partir de `tokens/motion.ts`, `tokens/radius.ts`
+ * e `tokens/shadow.ts` (nunca um valor duplicado aqui).
+ *
+ * `prefers-reduced-motion` é respeitado: todas as animações são
+ * desativadas para quem configurou essa preferência no sistema
+ * operacional (ESCOPO — "Preferências do usuário").
+ */
+
+/*
+ * ---------- Base de cor global (Sprint 31E) ----------
+ *
+ * Causa raiz do "alguns textos continuam escuros" relatado pelo
+ * Product Owner: `<button>`/`<input>`/`<select>`/`<textarea>` NÃO
+ * herdam `color` do body por padrão em nenhum navegador (usam a cor de
+ * UI nativa, tipicamente preta) — e `src/styles/globals.css` (UI legada
+ * do "escritório", independente deste Design System) nunca reseta isso.
+ * Como resultado, todo texto dentro de um elemento nativo de formulário
+ * sem `color` explícito (ex.: itens de `Dropdown`) ficava com a cor
+ * padrão do navegador em vez do tema ativo.
+ *
+ * Corrigido em um único lugar: `#root` (seletor de ID, com
+ * especificidade maior que o `body` de `globals.css`, garantindo que
+ * esta regra vença independentemente da ordem de carregamento dos dois
+ * arquivos CSS) define a cor de texto do tema; `button`/`input`/
+ * `select`/`textarea` passam a herdar em vez de usar o padrão do
+ * navegador.
+ */
+
+#root {
+  color: var(--ads-color-text-primary);
+}
+
+button,
+input,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+}
+
+/* ---------- Keyframes ---------- */
+
+@keyframes ads-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ads-slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ads-slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ads-scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ads-shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+
+@keyframes ads-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Utilitários de entrada (Fade / Slide / Scale) ---------- */
+
+.ads-fade-in {
+  animation: ads-fade-in var(--ads-duration-normal, 200ms) var(--ads-easing-decelerate, ease-out) both;
+}
+
+.ads-slide-up {
+  animation: ads-slide-up var(--ads-duration-normal, 200ms) var(--ads-easing-decelerate, ease-out) both;
+}
+
+.ads-slide-down {
+  animation: ads-slide-down var(--ads-duration-normal, 200ms) var(--ads-easing-decelerate, ease-out) both;
+}
+
+.ads-scale-in {
+  animation: ads-scale-in var(--ads-duration-fast, 120ms) var(--ads-easing-decelerate, ease-out) both;
+}
+
+/* ---------- Transição genérica (hover/focus/pressed) ---------- */
+
+.ads-transition {
+  transition-property: background-color, border-color, color, box-shadow, transform, opacity;
+  transition-duration: var(--ads-duration-fast, 120ms);
+  transition-timing-function: var(--ads-easing-standard, ease);
+}
+
+/* ---------- Foco visível (mesmo critério de foundations/accessibility/focus.ts) ---------- */
+
+.ads-focusable:focus-visible {
+  outline: 2px solid var(--ads-color-primary);
+  outline-offset: 2px;
+}
+
+/* ---------- Botão ---------- */
+
+.ads-btn {
+  border: none;
+  border-radius: var(--ads-radius-md, 8px);
+  cursor: pointer;
+}
+
+.ads-btn:active {
+  transform: scale(0.98);
+}
+
+.ads-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ads-btn--primary { background-color: var(--ads-color-solid-primary); color: var(--ads-color-on-solid); }
+.ads-btn--secondary { background-color: var(--ads-color-solid-secondary); color: var(--ads-color-on-solid); }
+.ads-btn--success { background-color: var(--ads-color-solid-success); color: var(--ads-color-on-solid); }
+.ads-btn--warning { background-color: var(--ads-color-solid-warning); color: var(--ads-color-on-solid); }
+.ads-btn--danger { background-color: var(--ads-color-solid-danger); color: var(--ads-color-on-solid); }
+.ads-btn--info { background-color: var(--ads-color-solid-info); color: var(--ads-color-on-solid); }
+.ads-btn--neutral { background-color: var(--ads-color-solid-neutral); color: var(--ads-color-on-solid); }
+
+.ads-btn:not(:disabled):hover {
+  filter: brightness(1.1);
+}
+
+/* ---------- Campo (Input/Checkbox/Radio/Switch) ---------- */
+
+.ads-input {
+  border: 1px solid var(--ads-color-border);
+  border-radius: var(--ads-radius-sm, 4px);
+  background-color: var(--ads-color-background);
+  color: var(--ads-color-text-primary);
+}
+
+.ads-input:focus-visible {
+  outline: 2px solid var(--ads-color-primary);
+  outline-offset: 1px;
+  border-color: var(--ads-color-primary);
+}
+
+.ads-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ads-input:not(:disabled):hover {
+  border-color: var(--ads-color-hover);
+}
+
+.ads-input::placeholder {
+  /* Branco com leve transparência (Sprint 31E) — derivado de
+     --ads-color-text-primary via color-mix, nunca um hex fixo. */
+  color: color-mix(in srgb, var(--ads-color-text-primary) 55%, transparent);
+}
+
+/* ---------- Card / Superfície ---------- */
+
+.ads-card {
+  background-color: var(--ads-color-surface);
+  border: 1px solid var(--ads-color-border);
+  border-radius: var(--ads-radius-lg, 12px);
+  box-shadow: var(--ads-shadow-sm);
+}
+
+.ads-card--interactive:hover {
+  background-color: var(--ads-color-hover);
+  border-color: var(--ads-color-hover);
+  box-shadow: var(--ads-shadow-md);
+}
+
+/* ---------- Efeito "glass" (Header premium — Sprint 31B) ---------- */
+
+.ads-glass {
+  background-color: color-mix(in srgb, var(--ads-color-surface) 72%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--ads-color-border);
+}
+
+/* ---------- Tabela (Sprint 31B) ---------- */
+
+.ads-table-header {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ads-color-text-secondary);
+  border-bottom: 1px solid var(--ads-color-border);
+}
+
+.ads-table-row {
+  border-bottom: 1px solid var(--ads-color-border);
+}
+
+.ads-table-row:hover {
+  background-color: var(--ads-color-hover);
+}
+
+.ads-table-row:last-child {
+  border-bottom: none;
+}
+
+/* ---------- Badge ---------- */
+
+.ads-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--ads-radius-full, 9999px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+}
+
+/* ---------- Modal / Drawer (overlay + entrada) ---------- */
+
+.ads-modal-overlay {
+  animation: ads-fade-in var(--ads-duration-fast, 120ms) var(--ads-easing-standard, ease) both;
+}
+
+.ads-modal {
+  animation: ads-scale-in var(--ads-duration-normal, 200ms) var(--ads-easing-decelerate, ease-out) both;
+  background-color: var(--ads-color-background);
+  border-radius: var(--ads-radius-lg, 12px);
+  box-shadow: var(--ads-shadow-xl);
+}
+
+.ads-drawer {
+  animation: ads-slide-up var(--ads-duration-normal, 200ms) var(--ads-easing-decelerate, ease-out) both;
+}
+
+/* ---------- Toast ---------- */
+
+.ads-toast {
+  animation: ads-slide-up var(--ads-duration-normal, 200ms) var(--ads-easing-decelerate, ease-out) both;
+  background-color: var(--ads-color-surface);
+  border-radius: var(--ads-radius-md, 8px);
+  box-shadow: var(--ads-shadow-lg);
+}
+
+/* ---------- Tooltip ---------- */
+
+.ads-tooltip {
+  animation: ads-fade-in var(--ads-duration-fast, 120ms) var(--ads-easing-standard, ease) both;
+  background-color: var(--ads-color-text-primary);
+  color: var(--ads-color-text-inverse);
+  border-radius: var(--ads-radius-sm, 4px);
+}
+
+/* ---------- Dropdown / Sidebar / Navegação (itens de lista) ---------- */
+
+.ads-list-item {
+  border-radius: var(--ads-radius-sm, 4px);
+  border-left: 2px solid transparent;
+}
+
+.ads-list-item:hover {
+  background-color: var(--ads-color-hover);
+}
+
+.ads-list-item[aria-selected='true'],
+.ads-list-item[data-active='true'] {
+  background-color: var(--ads-color-primary);
+  border-left-color: var(--ads-color-primary-hover);
+  color: var(--ads-color-on-solid, #ffffff);
+  font-weight: 600;
+}
+
+/* ---------- Loading: Skeleton com shimmer ---------- */
+
+.ads-skeleton {
+  background-color: var(--ads-color-border);
+  border-radius: var(--ads-radius-sm, 4px);
+}
+
+.ads-skeleton--shimmer {
+  background-image: linear-gradient(
+    90deg,
+    var(--ads-color-border) 0%,
+    var(--ads-color-surface) 50%,
+    var(--ads-color-border) 100%
+  );
+  background-size: 200% 100%;
+  animation: ads-shimmer 1.4s ease-in-out infinite;
+}
+
+/* ---------- Spinner ---------- */
+
+.ads-spinner {
+  display: inline-block;
+  border-radius: var(--ads-radius-full, 9999px);
+  border: 2px solid var(--ads-color-border);
+  border-top-color: var(--ads-color-primary);
+  animation: ads-spin 0.8s linear infinite;
+}
+
+/* ---------- Progress ---------- */
+
+.ads-progress-track {
+  width: 100%;
+  height: 6px;
+  border-radius: var(--ads-radius-full, 9999px);
+  background-color: var(--ads-color-border);
+  overflow: hidden;
+}
+
+.ads-progress-fill {
+  height: 100%;
+  background-color: var(--ads-color-primary);
+  transition: width var(--ads-duration-normal, 200ms) var(--ads-easing-standard, ease);
+}
+
+/* ---------- Preferência de movimento reduzido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ads-fade-in,
+  .ads-slide-up,
+  .ads-slide-down,
+  .ads-scale-in,
+  .ads-modal-overlay,
+  .ads-modal,
+  .ads-drawer,
+  .ads-toast,
+  .ads-tooltip,
+  .ads-skeleton--shimmer,
+  .ads-spinner {
+    animation: none !important;
+  }
+
+  .ads-transition,
+  .ads-btn,
+  .ads-progress-fill {
+    transition: none !important;
+  }
+}

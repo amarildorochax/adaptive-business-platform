@@ -172,6 +172,8 @@ Nenhum desses pontos de contato deveria parecer desconectado dos demais, e nenhu
 
 Isso é o que chamamos de Smart Business Identity: a ideia de que a identidade de uma empresa não é um detalhe estético aplicado depois que o produto já existe, mas um dado de entrada que molda a aparência de tudo o que a empresa vê e tudo o que ela produz através da plataforma. Uma empresa que nunca contratou um designer, e que só tem sua logo, deve ainda assim ver um sistema visualmente coerente com sua própria marca — não com uma marca genérica de software.
 
+Smart Business Identity, embora historicamente descrito nesta seção em sua dimensão visual, também compreende a dimensão institucional de uma empresa — quem ela é, como é chamada, e como pode ser contatada — como parte da mesma identidade de entrada que molda a experiência da plataforma. Esta extensão reconhece a dimensão institucional como parte da visão original; ela não define, por si só, nenhuma estrutura de dado, nenhum campo, nenhum módulo responsável, e nenhuma implementação técnica — essas decisões permanecem sujeitas a um processo arquitetural dedicado e futuro.
+
 ---
 
 ## Business Profile Engine
@@ -237,3 +239,16 @@ O horizonte de longo prazo desta plataforma vai além de ser uma boa ferramenta 
 Hoje, uma pequena empresa que quer operar com tecnologia moderna precisa montar seu próprio conjunto de ferramentas desconectadas — uma para CRM, outra para automação, outra para comunicação, outra para inteligência artificial, cada uma exigindo sua própria configuração, seu próprio aprendizado, sua própria conta e seu próprio custo. A visão de longo prazo desta plataforma é eliminar essa fragmentação, oferecendo, sob uma única identidade e uma única inteligência central, tudo o que uma empresa precisa para operar — adaptado automaticamente a quem ela é, não configurado manualmente por quem a opera.
 
 Isso não acontece de uma vez. Acontece Hub por Hub, princípio por princípio, decisão registrada por decisão registrada, sempre respondendo às mesmas quatro perguntas descritas na filosofia deste documento. Mas a direção é clara, e vale registrá-la aqui, no documento fundador, para que nenhuma decisão futura a perca de vista: construir a plataforma que faz a pequena e média empresa sentir que a tecnologia, finalmente, parou de exigir adaptação — e passou a oferecê-la.
+
+---
+
+## Amendment History
+
+Status: Frozen · Version: 2.0
+
+| Versão | Data | Amendment | Descrição |
+|---|---|---|---|
+| 1.0 | — | — | Versão original Frozen, sem registro formal de versão anterior a este histórico. |
+| 2.0 | 2026-07-23 | `docs/governance/AMENDMENT_PLATFORM_MANIFESTO_SMART_BUSINESS_IDENTITY.md` | Seção "Branding inteligente" estendida para reconhecer explicitamente a dimensão institucional de Smart Business Identity, além da dimensão visual já descrita. Nenhuma estrutura de dado, campo, módulo, ou tecnologia foi definida por esta Amendment. |
+
+Toda Amendment futura a este documento deverá ser registrada nesta tabela, preservando o histórico integral, conforme `DOCUMENTATION_CONSTITUTION.md`, Seção 10.
