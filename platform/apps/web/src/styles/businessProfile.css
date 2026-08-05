@@ -1,0 +1,129 @@
+/**
+ * Estilos do módulo Perfil Empresarial (FUN-101) — layout de duas colunas (a barra lateral em si é o
+ * `.section-subnav` genérico em `components.css`, reutilizado também pelo Branding/FUN-102), Timeline
+ * da Jornada de Construção do Perfil, grade de formulário e indicador de rascunho. Nenhuma cor/espaçamento
+ * fora da escala de `tokens.css`.
+ */
+.profile-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: var(--space-24);
+  align-items: start;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  min-width: 0;
+}
+
+/* ---- Timeline (Jornada de Construção do Perfil) ---- */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline__step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-8) 0;
+  position: relative;
+}
+
+.timeline__step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 24px;
+  bottom: -8px;
+  width: 2px;
+  background: var(--color-border);
+}
+
+.timeline__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-muted);
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.timeline__label {
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+}
+
+.timeline__step--completed .timeline__dot {
+  background: var(--color-success);
+  border-color: var(--color-success);
+}
+.timeline__step--completed .timeline__label {
+  color: var(--color-text-primary);
+}
+
+.timeline__step--current .timeline__dot {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.timeline__step--current .timeline__label {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-label);
+}
+
+/* ---- Formulários ---- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-16);
+}
+
+.channel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-12);
+}
+
+.channel-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-body);
+  cursor: pointer;
+}
+
+.channel-option:hover {
+  background: var(--color-hover);
+}
+
+.draft-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  margin-top: var(--space-8);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+.draft-indicator__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 1023px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+}

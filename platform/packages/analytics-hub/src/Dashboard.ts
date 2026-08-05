@@ -19,4 +19,12 @@ export interface Dashboard {
 
   /** Momento de criação. */
   readonly createdAt: Date;
+
+  /**
+   * Se o Dashboard foi arquivado. Campo adicionado por necessidade estrutural do próprio Blueprint —
+   * `ArchiveDashboard` é um dos dezesseis Commands já aprovados (`AnalyticsCommand.ts`), mas o
+   * Dashboard, como declarado originalmente, não tinha nenhum campo capaz de representar esse estado
+   * (mesmo critério já usado em IMP-006 para `Campaign`/`Audience`).
+   */
+  readonly archived: boolean;
 }

@@ -1,0 +1,46 @@
+{
+  "name": "@abp/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Adaptive Business Platform — API HTTP (FUN-004). Camada de transporte apenas — toda regra de negócio permanece nos Managers já aprovados.",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "typecheck": "tsc -b",
+    "build": "tsc -b",
+    "lint": "eslint ."
+  },
+  "main": "./src/main.ts",
+  "dependencies": {
+    "@abp/branding": "workspace:*",
+    "@abp/business-profile": "workspace:*",
+    "@abp/crm-hub": "workspace:*",
+    "@abp/infrastructure": "workspace:*",
+    "@abp/inventory-movement-hub": "workspace:*",
+    "@abp/persistence": "workspace:*",
+    "@abp/platform-services": "workspace:*",
+    "@abp/production-hub": "workspace:*",
+    "@abp/purchase-hub": "workspace:*",
+    "@abp/supplier-hub": "workspace:*",
+    "@fastify/cors": "^10.0.1",
+    "@fastify/swagger": "^9.4.2",
+    "@fastify/swagger-ui": "^5.2.1",
+    "fastify": "^5.2.1",
+    "fastify-plugin": "^5.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^24.0.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.14.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.19.0",
+    "vitest": "^4.1.10"
+  }
+}

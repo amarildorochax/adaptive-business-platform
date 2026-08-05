@@ -1,0 +1,212 @@
+/**
+ * Estilos específicos de página (UX-001) — layout/grid apenas, nunca lógica. Cada seletor aqui
+ * corresponde a uma `className` já usada pelo componente de página correspondente.
+ */
+
+/* ---- Dashboard ---- */
+.dashboard-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-16);
+}
+
+.dashboard-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.dashboard-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-16);
+}
+
+.dashboard-grid--wide {
+  grid-template-columns: 2fr 1fr;
+}
+
+.dashboard-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-16);
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+  padding: var(--space-12) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.activity-item__icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-muted);
+  color: var(--color-primary);
+}
+
+.activity-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.activity-item__title {
+  font-size: var(--font-size-body);
+  color: var(--color-text-primary);
+}
+
+.activity-item__meta {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}
+
+.insight-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  padding: var(--space-16) var(--space-20);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-primary-muted), transparent);
+  border: 1px solid var(--color-border);
+}
+
+.insight-banner__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insight-banner__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.insight-banner__title {
+  font-weight: var(--font-weight-h3);
+  color: var(--color-text-primary);
+}
+
+.insight-banner__description {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+}
+
+@media (max-width: 1023px) {
+  .dashboard-grid,
+  .dashboard-grid--wide {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Login ---- */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-24);
+  background:
+    radial-gradient(circle at 15% 15%, var(--color-primary-muted), transparent 45%),
+    var(--color-background);
+}
+
+.login-page__panel {
+  width: 100%;
+  max-width: 400px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-32);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.login-page__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.login-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.login-page__error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--color-danger);
+  background: var(--color-danger-muted);
+  border-radius: var(--radius-md);
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-caption);
+}
+
+.login-page__info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--color-success);
+  background: var(--color-success-muted);
+  border-radius: var(--radius-md);
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-caption);
+}
+
+.login-page__toggle {
+  align-self: center;
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: var(--font-size-caption);
+  cursor: pointer;
+  padding: var(--space-4);
+}
+
+.login-page__toggle:hover {
+  text-decoration: underline;
+}
+
+/* ---- Coming soon ---- */
+.coming-soon__body {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  color: var(--color-text-secondary);
+}

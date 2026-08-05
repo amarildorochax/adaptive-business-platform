@@ -17,4 +17,11 @@ export interface Audience {
 
   /** Momento de construção. */
   readonly builtAt: Date;
+
+  /**
+   * Alcance estimado no momento da construção. Campo prático herdado de
+   * `src/core/campaign/CampaignAudience.ts` (Campaign Management legado) — mesmo precedente de
+   * extensão já aplicado em `Campaign.ts` nesta Sprint.
+   */
+  readonly estimatedReach?: number;
 }

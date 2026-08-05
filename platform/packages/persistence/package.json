@@ -1,0 +1,36 @@
+{
+  "name": "@abp/persistence",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Adaptive Business Platform — infraestrutura real de persistência (FUN-003). Implementações concretas de Repository Interfaces já aprovadas, nunca uma redefinição delas.",
+  "scripts": {
+    "typecheck": "tsc -b",
+    "build": "tsc -b",
+    "db:migrate": "tsx src/bootstrap/runMigrations.ts",
+    "verify": "tsx src/bootstrap/verifyRealPersistence.ts"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@abp/business-profile": "workspace:*",
+    "@abp/branding": "workspace:*",
+    "@abp/crm-hub": "workspace:*",
+    "@abp/inventory-movement-hub": "workspace:*",
+    "@abp/platform-services": "workspace:*",
+    "@abp/production-hub": "workspace:*",
+    "@abp/purchase-hub": "workspace:*",
+    "@abp/supplier-hub": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3"
+  }
+}

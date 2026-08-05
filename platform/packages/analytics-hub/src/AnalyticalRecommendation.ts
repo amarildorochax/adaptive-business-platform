@@ -1,4 +1,11 @@
 /**
+ * Prioridade de uma Analytical Recommendation. Tipo fechado herdado de
+ * `src/core/business-intelligence/Recommendation.ts` (Business Intelligence Engine legado, real e
+ * funcional) — derivada da gravidade do Insight que originou a Recommendation.
+ */
+export type AnalyticalRecommendationPriority = 'low' | 'medium' | 'high';
+
+/**
  * Analytical Recommendation — uma sugestão de ação derivada de um Insight, no contexto
  * exclusivamente analítico deste domínio; sempre sujeita a confirmação humana antes de qualquer ação
  * (Human Oversight, Blueprint ADR-005).
@@ -19,4 +26,10 @@ export interface AnalyticalRecommendation {
 
   /** Momento da formulação. */
   readonly formulatedAt: Date;
+
+  /** Título legível, herdado de `src/core/business-intelligence/Recommendation.ts`. */
+  readonly title?: string;
+
+  /** Prioridade, herdada de `src/core/business-intelligence/Recommendation.ts`. */
+  readonly priority?: AnalyticalRecommendationPriority;
 }

@@ -1,0 +1,104 @@
+/**
+ * Estilos do módulo Branding / Brand Center (FUN-102) — layout de duas colunas reutiliza
+ * `.profile-layout`/`.profile-content` (`businessProfile.css`, FUN-101); aqui apenas o que é
+ * específico de Branding: swatches de paleta, preview de tipografia, preview de Tema claro/escuro e
+ * a galeria de componentes. Nenhuma cor/espaçamento fora da escala de `tokens.css`.
+ */
+
+/* ---- Paleta ---- */
+.palette-swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+}
+
+.palette-swatch {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.palette-swatch--lg {
+  width: 48px;
+  height: 48px;
+}
+
+.palette-swatch-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* ---- Tipografia ---- */
+.typography-preview-grid {
+  display: grid;
+  gap: var(--space-16);
+}
+
+.typography-preview-label {
+  display: block;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.typography-scale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* ---- Tema ---- */
+.theme-preview-row {
+  display: flex;
+  gap: var(--space-16);
+  margin-top: var(--space-12);
+}
+
+.theme-preview-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-strong);
+  font-weight: var(--font-weight-label);
+}
+
+.theme-preview-card--dark {
+  background: #0b0d12;
+  color: #f2f3f6;
+}
+
+.theme-preview-card--light {
+  background: #f6f7fa;
+  color: #14161c;
+}
+
+/* ---- Notas de limitação ---- */
+.upload-unavailable-note,
+.future-availability-note {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}
+
+/* ---- Galeria de Componentes ---- */
+.component-gallery-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.component-gallery-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}

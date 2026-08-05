@@ -12,6 +12,18 @@ export interface Contact {
   /** Tenant ao qual o Contact pertence. */
   readonly tenantId: string;
 
+  /** Nome da pessoa. */
+  readonly name: string;
+
+  /** Papel/cargo da pessoa dentro da Organization associada, quando aplicável. */
+  readonly role?: string;
+
+  /** E-mail de contato, quando informado. */
+  readonly email?: string;
+
+  /** Telefone de contato, quando informado. */
+  readonly phone?: string;
+
   /** Natureza da associação — Customer ou Organization, nunca ambos. */
   readonly associationType: ContactAssociationType;
 

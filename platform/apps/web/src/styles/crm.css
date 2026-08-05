@@ -1,0 +1,31 @@
+/**
+ * Estilos do módulo CRM Workspace (FUN-103) — layout de duas colunas reutiliza `.profile-layout`/
+ * `.profile-content` (`businessProfile.css`, FUN-101) e o Kanban/`PipelineCard` reutilizam as regras
+ * genéricas já em `components.css`; aqui apenas o que é específico da lista de eventos da Timeline
+ * Comercial. Nenhuma cor/espaçamento fora da escala de `tokens.css`.
+ */
+.activity-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.activity-log-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-body);
+}
+
+.activity-log-list li:last-child {
+  border-bottom: none;
+}
+
+.activity-log-list__time {
+  margin-left: auto;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}

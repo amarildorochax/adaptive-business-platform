@@ -13,6 +13,12 @@ export interface Opportunity {
   /** Tenant ao qual a Opportunity pertence. */
   readonly tenantId: string;
 
+  /** Título descritivo da possibilidade de negócio. Portado de `Deal.title` (src/app/features/crm). */
+  readonly title: string;
+
+  /** Valor estimado da possibilidade de negócio. Portado de `Deal.value`. */
+  readonly value: number;
+
   /** Relationship ao qual esta Opportunity está associada — sempre de partyType Customer ou Organization. */
   readonly relationshipId: string;
 

@@ -2,18 +2,28 @@
   "files": [],
   "references": [
     { "path": "./apps/web" },
+    { "path": "./apps/api" },
     { "path": "./packages/core" },
     { "path": "./packages/shared" },
     { "path": "./packages/infrastructure" },
     { "path": "./packages/platform-services" },
     { "path": "./packages/ai" },
     { "path": "./packages/crm-hub" },
+    { "path": "./packages/supplier-hub" },
+    { "path": "./packages/purchase-hub" },
+    { "path": "./packages/inventory-movement-hub" },
+    { "path": "./packages/production-hub" },
     { "path": "./packages/communication-hub" },
+    { "path": "./packages/content-hub" },
+    { "path": "./packages/commerce-hub" },
     { "path": "./packages/finance-hub" },
     { "path": "./packages/analytics-hub" },
     { "path": "./packages/growth-hub" },
     { "path": "./packages/automation-engine" },
     { "path": "./packages/runtime" },
-    { "path": "./packages/ai-agents" }
+    { "path": "./packages/ai-agents" },
+    { "path": "./packages/business-profile" },
+    { "path": "./packages/branding" },
+    { "path": "./packages/persistence" }
   ]
 }

@@ -12,4 +12,7 @@ export interface Widget {
 
   /** Identificador opaco da Metric, KPI, ou Visualization exibida. */
   readonly sourceId: string;
+
+  /** Título legível, herdado de `src/core/dashboard/DashboardWidget.ts` (Adaptive Dashboard legado). */
+  readonly title?: string;
 }

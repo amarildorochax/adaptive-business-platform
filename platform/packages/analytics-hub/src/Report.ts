@@ -15,4 +15,14 @@ export interface Report {
 
   /** Momento de geração. */
   readonly generatedAt: Date;
+
+  /** Título legível, herdado de `src/core/analytics/AnalyticsReport.ts` (Business Analytics legado). */
+  readonly title?: string;
+
+  /**
+   * Resumo determinístico (contagem/média/mínimo/máximo sobre as Metric associadas) — nunca gerado
+   * por IA, mesmo princípio já explícito no doc-comment de `AnalyticsReport.ts`/
+   * `AnalyticsService.buildSummary()` (legado) e na exclusão de IA desta própria Sprint.
+   */
+  readonly summary?: string;
 }

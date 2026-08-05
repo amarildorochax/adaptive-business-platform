@@ -26,4 +26,18 @@ export interface MemoryEntry {
 
   /** Momento da criação. */
   readonly createdAt: Date;
+
+  /**
+   * Título legível da entrada, herdado de `src/core/memory/MemoryRecord.ts` (Business Memory
+   * legado, real e funcional) — `MemoryEntry`, como já declarado, cobre apenas Tipo/Escopo/
+   * Titularidade; estes três campos práticos são portados aqui pela mesma disciplina já aplicada em
+   * toda Sprint anterior desta série (extensão aditiva, nunca redefinição).
+   */
+  readonly title?: string;
+
+  /** Conteúdo da entrada, herdado de `MemoryRecord.content`. */
+  readonly content?: string;
+
+  /** Marcadores de categorização livre, herdados de `MemoryRecord.tags`. */
+  readonly tags?: readonly string[];
 }

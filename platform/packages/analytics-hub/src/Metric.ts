@@ -28,4 +28,11 @@ export interface Metric {
 
   /** Momento do último cálculo. */
   readonly calculatedAt: Date;
+
+  /**
+   * Rótulo legível da Metric. Campo prático herdado de `src/core/analytics/AnalyticsMetric.ts`
+   * (Business Analytics legado, real e funcional) — uma fórmula sozinha não é um nome amigável de
+   * exibição; mesmo precedente já estabelecido em IMP-002 (campos práticos herdados de legado real).
+   */
+  readonly name?: string;
 }

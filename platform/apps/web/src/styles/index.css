@@ -1,0 +1,19 @@
+/**
+ * Ponto único de entrada do CSS de toda a aplicação — importado exatamente uma vez, em `main.tsx`.
+ * Ordem importa: fontes -> tokens -> reset/base -> componentes -> layout -> páginas. Nenhum
+ * componente React importa CSS por conta própria; nenhuma folha de estilo é duplicada por tema (ver
+ * `tokens.css`).
+ */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+
+@import "./tokens.css";
+@import "./base.css";
+@import "./components.css";
+@import "./layout.css";
+@import "./pages.css";
+@import "./businessProfile.css";
+@import "./branding.css";
+@import "./crm.css";

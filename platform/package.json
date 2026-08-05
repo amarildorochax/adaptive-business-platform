@@ -6,13 +6,15 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.10"
   },
   "scripts": {
     "dev": "pnpm --filter @abp/web dev",
     "build": "pnpm -r --if-present run build",
     "lint": "pnpm -r --if-present run lint",
     "format": "pnpm -r --if-present run format",
-    "typecheck": "pnpm -r --if-present run typecheck"
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test": "vitest run"
   }
 }

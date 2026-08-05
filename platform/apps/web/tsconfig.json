@@ -21,5 +21,23 @@
       "@modules/*": ["./src/modules/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    { "path": "../../packages/core" },
+    { "path": "../../packages/shared" },
+    { "path": "../../packages/platform-services" },
+    { "path": "../../packages/ai" },
+    { "path": "../../packages/ai-agents" },
+    { "path": "../../packages/communication-hub" },
+    { "path": "../../packages/content-hub" },
+    { "path": "../../packages/commerce-hub" },
+    { "path": "../../packages/finance-hub" },
+    { "path": "../../packages/growth-hub" },
+    { "path": "../../packages/analytics-hub" },
+    { "path": "../../packages/automation-engine" },
+    { "path": "../../packages/infrastructure" },
+    { "path": "../../packages/runtime" },
+    { "path": "../../packages/persistence" },
+    { "path": "../api" }
+  ]
 }
