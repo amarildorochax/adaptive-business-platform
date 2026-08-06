@@ -36,9 +36,11 @@ const OPEN_STATUSES: readonly PurchaseStatus[] = ["Draft", "PendingApproval", "A
 /**
  * Implementação real de `PurchaseOrderRepository`. `PurchaseOrder.items` (parte interna do
  * Aggregate, per `PURCHASE_HUB.md`, Capítulo 4) é persistido em `purchase_order_items`, uma tabela
- * filha sem Repository Interface própria — `create`/`update` regravam a lista inteira de itens
+ * filha sem Repository Interface própria — `create`/`update` sincronizam a lista inteira de itens
  * dentro da mesma transação que grava o Purchase Order, nunca em duas operações independentes,
- * mesmo padrão de `SqliteSupplierRepository`/`supplier_contacts` (IMP-202).
+ * mesmo padrão de `SqliteSupplierRepository`/`supplier_contacts` (IMP-202). Diferente daquela tabela,
+ * `replaceItems` faz `diff` seletivo (UPDATE/INSERT/DELETE) em vez de `DELETE`-completo-e-reinserção
+ * — `purchase_order_items` é referenciada por FOREIGN KEY de `receiving_lines`, ver BUG-001.
  */
 export class SqlitePurchaseOrderRepository implements PurchaseOrderRepository {
   constructor(private readonly db: DatabaseSync) {}
@@ -128,23 +130,66 @@ export class SqlitePurchaseOrderRepository implements PurchaseOrderRepository {
       );
   }
 
+  /**
+   * BUG-001 (corrigido) — regravava `purchase_order_items` por completo (`DELETE` + `INSERT`),
+   * mesmo padrão de `SqliteSupplierRepository.replaceContacts` (IMP-202). Diferente de
+   * `supplier_contacts` (nunca referenciada por FOREIGN KEY de nenhuma outra tabela),
+   * `purchase_order_items` É referenciada por `receiving_lines.purchase_order_item_id` — a partir do
+   * segundo `registerReceiving` contra o mesmo Purchase Order, o `DELETE` violava essa FOREIGN KEY
+   * (a Receiving já criada referencia o item), propagando um erro de constraint bruto até HTTP 500.
+   * Ver `docs/implementation/BUG_001_REGISTER_RECEIVING_HTTP500.md`.
+   *
+   * Corrigido para um `diff` seletivo — `UPDATE` para item já existente, `INSERT` apenas para item
+   * genuinamente novo, `DELETE` apenas para item genuinamente removido da lista — nunca excluindo
+   * uma linha que uma `receiving_lines` ainda referencia. `PurchaseOrderRepository` (Core) não é
+   * alterado: a assinatura e o comportamento observável (o Aggregate completo é sempre regravado a
+   * partir do estado atual em memória) permanecem idênticos.
+   */
   private replaceItems(purchaseOrderId: string, items: readonly PurchaseOrderItem[]): void {
-    this.db.prepare("DELETE FROM purchase_order_items WHERE purchase_order_id = ?").run(purchaseOrderId);
+    const existingRows = this.db
+      .prepare("SELECT purchase_order_item_id FROM purchase_order_items WHERE purchase_order_id = ?")
+      .all(purchaseOrderId) as unknown as { purchase_order_item_id: string }[];
+    const existingIds = new Set(existingRows.map((row) => row.purchase_order_item_id));
+    const nextIds = new Set(items.map((item) => item.purchaseOrderItemId));
+
+    const staleIds = [...existingIds].filter((id) => !nextIds.has(id));
+    if (staleIds.length > 0) {
+      const del = this.db.prepare("DELETE FROM purchase_order_items WHERE purchase_order_item_id = ?");
+      for (const id of staleIds) {
+        del.run(id);
+      }
+    }
 
     const insert = this.db.prepare(
       "INSERT INTO purchase_order_items (purchase_order_item_id, purchase_order_id, product_id, quantity_ordered, quantity_received, acquisition_cost_amount, acquisition_cost_currency_code, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     );
+    const update = this.db.prepare(
+      "UPDATE purchase_order_items SET product_id = ?, quantity_ordered = ?, quantity_received = ?, acquisition_cost_amount = ?, acquisition_cost_currency_code = ?, status = ? WHERE purchase_order_item_id = ?",
+    );
+
     for (const item of items) {
-      insert.run(
-        item.purchaseOrderItemId,
-        purchaseOrderId,
-        item.productId,
-        item.quantityOrdered,
-        item.quantityReceived,
-        item.acquisitionCost.amount,
-        item.acquisitionCost.currencyCode,
-        item.status,
-      );
+      if (existingIds.has(item.purchaseOrderItemId)) {
+        update.run(
+          item.productId,
+          item.quantityOrdered,
+          item.quantityReceived,
+          item.acquisitionCost.amount,
+          item.acquisitionCost.currencyCode,
+          item.status,
+          item.purchaseOrderItemId,
+        );
+      } else {
+        insert.run(
+          item.purchaseOrderItemId,
+          purchaseOrderId,
+          item.productId,
+          item.quantityOrdered,
+          item.quantityReceived,
+          item.acquisitionCost.amount,
+          item.acquisitionCost.currencyCode,
+          item.status,
+        );
+      }
     }
   }
 

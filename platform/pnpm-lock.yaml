@@ -26,6 +26,9 @@ importers:
       '@abp/crm-hub':
         specifier: workspace:*
         version: link:../../packages/crm-hub
+      '@abp/fiscal-hub':
+        specifier: workspace:*
+        version: link:../../packages/fiscal-hub
       '@abp/infrastructure':
         specifier: workspace:*
         version: link:../../packages/infrastructure
@@ -351,6 +354,15 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
+  packages/fiscal-hub:
+    dependencies:
+      '@abp/core':
+        specifier: workspace:*
+        version: link:../core
+      '@abp/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/growth-hub:
     dependencies:
       '@abp/core':
@@ -385,6 +397,9 @@ importers:
       '@abp/crm-hub':
         specifier: workspace:*
         version: link:../crm-hub
+      '@abp/fiscal-hub':
+        specifier: workspace:*
+        version: link:../fiscal-hub
       '@abp/inventory-movement-hub':
         specifier: workspace:*
         version: link:../inventory-movement-hub

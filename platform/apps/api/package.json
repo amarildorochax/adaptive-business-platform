@@ -19,6 +19,7 @@
     "@abp/branding": "workspace:*",
     "@abp/business-profile": "workspace:*",
     "@abp/crm-hub": "workspace:*",
+    "@abp/fiscal-hub": "workspace:*",
     "@abp/infrastructure": "workspace:*",
     "@abp/inventory-movement-hub": "workspace:*",
     "@abp/persistence": "workspace:*",

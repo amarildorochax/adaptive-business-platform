@@ -212,6 +212,71 @@ interface DemoWorkCenter {
   readonly createdAt: string;
 }
 
+interface DemoTaxRegime {
+  readonly taxRegimeId: string;
+  readonly tenantId: string;
+  readonly name: string;
+  readonly createdAt: string;
+}
+
+interface DemoTaxRule {
+  readonly taxRuleId: string;
+  readonly tenantId: string;
+  readonly taxRegimeId: string;
+  readonly classification: { readonly code: string };
+  readonly rate: { readonly type: string; readonly value: number };
+  readonly exemptionCondition?: string;
+  readonly validFrom: string;
+  readonly validUntil?: string;
+  active: boolean;
+  readonly createdAt: string;
+  updatedAt: string;
+}
+
+interface DemoTaxCalculation {
+  readonly taxCalculationId: string;
+  readonly fiscalDocumentLineId: string;
+  readonly taxRuleId: string;
+  readonly amount: DemoMoney;
+  readonly calculatedAt: string;
+}
+
+interface DemoFiscalDocumentLine {
+  readonly fiscalDocumentLineId: string;
+  readonly productId: string;
+  readonly quantity: number;
+  readonly unitValue: DemoMoney;
+  readonly classification: { readonly code: string };
+  readonly taxCalculation: DemoTaxCalculation;
+}
+
+interface DemoFiscalDocument {
+  readonly fiscalDocumentId: string;
+  readonly tenantId: string;
+  readonly type: string;
+  readonly orderId?: string;
+  readonly invoiceId?: string;
+  readonly lines: DemoFiscalDocumentLine[];
+  status: string;
+  cancelReason?: string;
+  readonly issuedAt: string;
+  cancelledAt?: string;
+  readonly createdAt: string;
+  updatedAt: string;
+}
+
+interface DemoFiscalObligation {
+  readonly fiscalObligationId: string;
+  readonly tenantId: string;
+  readonly type: string;
+  readonly periodicity: string;
+  readonly dueDate: string;
+  status: string;
+  fulfilledAt?: string;
+  readonly createdAt: string;
+  updatedAt: string;
+}
+
 /**
  * Cria uma função compatível com `fetch` para um Tenant de demonstração — estado de Opportunity mutável entre chamadas (para refletir `moveOpportunity`), e contadores próprios para simular múltiplos registros de CRM criados na mesma sessão (FUN-103). Estado de Supplier real (IMP-205) — `suppliers`/`catalogItemSequence`/`contractSequence` simulam `apps/api` (IMP-203) o suficiente para exercitar o Supplier Workspace sem depender de um servidor real. Estado de Purchase real (IMP-305) — `purchaseOrders`/`requisitions`/`reorderRules`/`receivings` simulam `apps/api` (IMP-303) o suficiente para exercitar o Purchase Workspace sem depender de um servidor real; a máquina de estados (`PendingApproval` no primeiro item, teto de aprovação, `PartiallyReceived`/`Received`) espelha `PurchasePolicy`/`PurchaseOrderService` (Core, IMP-301) apenas na medida do necessário para os cenários exercitados por `PurchasePage.test.tsx` — nunca uma reimplementação completa do domínio.
  *
@@ -231,6 +296,14 @@ interface DemoWorkCenter {
  * real. `startProduction` replica a mesma verificação de disponibilidade de insumo do Core
  * (`ProductionPolicy.hasSufficientInput`, IMP-501) apenas na medida do necessário para os cenários
  * exercitados por `ProductionPage.test.tsx` — nunca uma reimplementação completa do domínio.
+ *
+ * Estado de Fiscal real (IMP-605) — `taxRegimesByTenant`/`taxRules`/`fiscalDocuments`/
+ * `fiscalObligations` simulam `apps/api` (IMP-603) o suficiente para exercitar o Fiscal Workspace sem
+ * depender de um servidor real. `calculateTax` replica a mesma busca de Tax Rule vigente do Core
+ * (`TaxRuleRepository.findApplicable`/`FiscalPolicy.isTaxRuleApplicable`/`computeTaxAmount`, IMP-601) e
+ * `evaluateFiscalObligations` replica `FiscalPolicy.isFiscalObligationOverdue`, ambos apenas na medida
+ * do necessário para os cenários exercitados por `FiscalPage.test.tsx` — nunca uma reimplementação
+ * completa do domínio.
  */
 export function createDemoApiFetchMock(tenantId: string): typeof fetch {
   let opportunitySequence = 0;
@@ -275,6 +348,16 @@ export function createDemoApiFetchMock(tenantId: string): typeof fetch {
   const billsOfMaterials = new Map<string, DemoBillOfMaterials>();
   const productionOrders = new Map<string, DemoProductionOrder>();
   const workCenters = new Map<string, DemoWorkCenter>();
+
+  let taxRegimeSequence = 0;
+  let taxRuleSequence = 0;
+  let taxCalculationSequence = 0;
+  let fiscalDocumentSequence = 0;
+  let fiscalObligationSequence = 0;
+  const taxRegimesByTenant = new Map<string, DemoTaxRegime>();
+  const taxRules = new Map<string, DemoTaxRule>();
+  const fiscalDocuments = new Map<string, DemoFiscalDocument>();
+  const fiscalObligations = new Map<string, DemoFiscalObligation>();
 
   function positionKey(productId: string, locationId: string | undefined): string {
     return `${productId}::${locationId ?? ""}`;
@@ -1067,6 +1150,214 @@ export function createDemoApiFetchMock(tenantId: string): typeof fetch {
     }
     if (method === "GET" && path === "/work-centers/active") {
       return jsonResponse([...workCenters.values()].filter((w) => w.active));
+    }
+
+    if (method === "POST" && path === "/tax-regimes") {
+      const body = init?.body ? (JSON.parse(init.body.toString()) as { readonly tenantId: string; readonly name: string }) : undefined;
+      if (!body?.name.trim()) {
+        return jsonResponse({ error: { code: "FISCAL_INVALID_TAX_REGIME_NAME", message: "Tax Regime inválido — o nome é obrigatório e não pode ser vazio.", correlationId: "demo-corr-1" } }, 422);
+      }
+      if (taxRegimesByTenant.has(body.tenantId)) {
+        return jsonResponse({ error: { code: "FISCAL_DUPLICATE_TAX_REGIME", message: `O Tenant ${body.tenantId} já possui um Tax Regime registrado.`, correlationId: "demo-corr-1" } }, 409);
+      }
+      taxRegimeSequence += 1;
+      const regime: DemoTaxRegime = { taxRegimeId: `regime-demo-${taxRegimeSequence}`, tenantId: body.tenantId, name: body.name, createdAt: new Date().toISOString() };
+      taxRegimesByTenant.set(regime.tenantId, regime);
+      return jsonResponse(regime, 201);
+    }
+    if (method === "GET" && /^\/tax-regimes\/[^/]+$/.test(path)) {
+      const requestedTenantId = path.split("/").pop()!;
+      const found = taxRegimesByTenant.get(requestedTenantId);
+      return found ? jsonResponse(found) : jsonResponse({ error: { code: "FISCAL_TAX_REGIME_NOT_FOUND", message: `Nenhum Tax Regime encontrado para o Tenant ${requestedTenantId}.`, correlationId: "demo-corr-1" } }, 404);
+    }
+
+    if (method === "POST" && path === "/tax-rules") {
+      const body = init?.body
+        ? (JSON.parse(init.body.toString()) as {
+            readonly tenantId: string;
+            readonly taxRegimeId: string;
+            readonly classification: { readonly code: string };
+            readonly rate: { readonly type: string; readonly value: number };
+            readonly exemptionCondition?: string;
+            readonly validFrom: string;
+            readonly validUntil?: string;
+          })
+        : undefined;
+      taxRuleSequence += 1;
+      const now = new Date().toISOString();
+      const rule: DemoTaxRule = {
+        taxRuleId: `rule-demo-${taxRuleSequence}`,
+        tenantId: body!.tenantId,
+        taxRegimeId: body!.taxRegimeId,
+        classification: body!.classification,
+        rate: body!.rate,
+        exemptionCondition: body!.exemptionCondition,
+        validFrom: body!.validFrom,
+        validUntil: body!.validUntil,
+        active: true,
+        createdAt: now,
+        updatedAt: now,
+      };
+      taxRules.set(rule.taxRuleId, rule);
+      return jsonResponse(rule, 201);
+    }
+    if (method === "GET" && /^\/tax-rules\/[^/]+$/.test(path)) {
+      const taxRuleId = path.split("/").pop()!;
+      const found = taxRules.get(taxRuleId);
+      return found ? jsonResponse(found) : jsonResponse({ error: { code: "FISCAL_TAX_RULE_NOT_FOUND", message: `Tax Rule ${taxRuleId} não encontrada.`, correlationId: "demo-corr-1" } }, 404);
+    }
+    if (method === "POST" && /^\/tax-rules\/[^/]+\/deactivate$/.test(path)) {
+      const taxRuleId = path.split("/")[2];
+      const existing = taxRules.get(taxRuleId);
+      if (!existing) {
+        return jsonResponse({ error: { code: "FISCAL_TAX_RULE_NOT_FOUND", message: `Tax Rule ${taxRuleId} não encontrada.`, correlationId: "demo-corr-1" } }, 404);
+      }
+      existing.active = false;
+      existing.updatedAt = new Date().toISOString();
+      return jsonResponse(existing);
+    }
+
+    if (method === "POST" && path === "/tax-calculations") {
+      const body = init?.body
+        ? (JSON.parse(init.body.toString()) as {
+            readonly fiscalDocumentLineId: string;
+            readonly taxRegimeId: string;
+            readonly classification: { readonly code: string };
+            readonly baseAmount: DemoMoney;
+            readonly calculationDate?: string;
+          })
+        : undefined;
+      const date = body?.calculationDate ? new Date(body.calculationDate) : new Date();
+      const applicable = [...taxRules.values()].find(
+        (rule) =>
+          rule.taxRegimeId === body?.taxRegimeId &&
+          rule.classification.code === body.classification.code &&
+          rule.active &&
+          new Date(rule.validFrom) <= date &&
+          (!rule.validUntil || new Date(rule.validUntil) >= date),
+      );
+      if (!applicable) {
+        return jsonResponse({ error: { code: "FISCAL_NO_APPLICABLE_TAX_RULE_FOUND", message: `Nenhuma Tax Rule vigente encontrada para o Tax Regime ${body?.taxRegimeId} na data do cálculo.`, correlationId: "demo-corr-1" } }, 404);
+      }
+      taxCalculationSequence += 1;
+      const amount = applicable.rate.type === "Percentage" ? (body!.baseAmount.amount * applicable.rate.value) / 100 : applicable.rate.value;
+      const calculation: DemoTaxCalculation = {
+        taxCalculationId: `calc-demo-${taxCalculationSequence}`,
+        fiscalDocumentLineId: body!.fiscalDocumentLineId,
+        taxRuleId: applicable.taxRuleId,
+        amount: { amount, currencyCode: body!.baseAmount.currencyCode },
+        calculatedAt: new Date().toISOString(),
+      };
+      return jsonResponse(calculation, 201);
+    }
+
+    if (method === "POST" && path === "/fiscal-documents") {
+      const body = init?.body
+        ? (JSON.parse(init.body.toString()) as {
+            readonly tenantId: string;
+            readonly type: string;
+            readonly orderId?: string;
+            readonly invoiceId?: string;
+            readonly lines: DemoFiscalDocumentLine[];
+            readonly number?: string;
+            readonly series?: string;
+          })
+        : undefined;
+      if (!body?.orderId && !body?.invoiceId) {
+        return jsonResponse({ error: { code: "FISCAL_DOCUMENT_MISSING_ORIGIN", message: "Fiscal Document inválido — deve referenciar ao menos uma origem (orderId ou invoiceId).", correlationId: "demo-corr-1" } }, 422);
+      }
+      fiscalDocumentSequence += 1;
+      const now = new Date().toISOString();
+      const document: DemoFiscalDocument = {
+        fiscalDocumentId: `doc-demo-${fiscalDocumentSequence}`,
+        tenantId: body.tenantId,
+        type: body.type,
+        orderId: body.orderId,
+        invoiceId: body.invoiceId,
+        lines: body.lines,
+        status: "Issued",
+        issuedAt: now,
+        createdAt: now,
+        updatedAt: now,
+      };
+      fiscalDocuments.set(document.fiscalDocumentId, document);
+      return jsonResponse(document, 201);
+    }
+    if (method === "GET" && /^\/fiscal-documents\/by-origin\/[^/]+$/.test(path)) {
+      const orderId = path.split("/").pop()!;
+      return jsonResponse([...fiscalDocuments.values()].filter((d) => d.orderId === orderId));
+    }
+    if (method === "GET" && /^\/fiscal-documents\/[^/]+$/.test(path)) {
+      const fiscalDocumentId = path.split("/").pop()!;
+      const found = fiscalDocuments.get(fiscalDocumentId);
+      return found ? jsonResponse(found) : jsonResponse({ error: { code: "FISCAL_DOCUMENT_NOT_FOUND", message: `Fiscal Document ${fiscalDocumentId} não encontrado.`, correlationId: "demo-corr-1" } }, 404);
+    }
+    if (method === "POST" && /^\/fiscal-documents\/[^/]+\/cancel$/.test(path)) {
+      const fiscalDocumentId = path.split("/")[2];
+      const existing = fiscalDocuments.get(fiscalDocumentId);
+      if (!existing) {
+        return jsonResponse({ error: { code: "FISCAL_DOCUMENT_NOT_FOUND", message: `Fiscal Document ${fiscalDocumentId} não encontrado.`, correlationId: "demo-corr-1" } }, 404);
+      }
+      if (existing.status === "Cancelled") {
+        return jsonResponse({ error: { code: "FISCAL_DOCUMENT_INVALID_STATUS_TRANSITION", message: `Transição de status de Fiscal Document inválida: ${existing.status} → Cancelled.`, correlationId: "demo-corr-1" } }, 409);
+      }
+      const body = init?.body ? (JSON.parse(init.body.toString()) as { readonly reason: string }) : undefined;
+      existing.status = "Cancelled";
+      existing.cancelReason = body?.reason;
+      existing.cancelledAt = new Date().toISOString();
+      existing.updatedAt = new Date().toISOString();
+      return jsonResponse(existing);
+    }
+
+    if (method === "POST" && path === "/fiscal-obligations") {
+      const body = init?.body ? (JSON.parse(init.body.toString()) as { readonly tenantId: string; readonly type: string; readonly periodicity: string; readonly dueDate: string }) : undefined;
+      fiscalObligationSequence += 1;
+      const now = new Date().toISOString();
+      const obligation: DemoFiscalObligation = {
+        fiscalObligationId: `obligation-demo-${fiscalObligationSequence}`,
+        tenantId: body!.tenantId,
+        type: body!.type,
+        periodicity: body!.periodicity,
+        dueDate: body!.dueDate,
+        status: "Pending",
+        createdAt: now,
+        updatedAt: now,
+      };
+      fiscalObligations.set(obligation.fiscalObligationId, obligation);
+      return jsonResponse(obligation, 201);
+    }
+    if (method === "GET" && path === "/fiscal-obligations/pending") {
+      return jsonResponse([...fiscalObligations.values()].filter((o) => o.status === "Pending"));
+    }
+    if (method === "GET" && path === "/fiscal-obligations/overdue") {
+      return jsonResponse([...fiscalObligations.values()].filter((o) => o.status === "Overdue"));
+    }
+    if (method === "POST" && path === "/fiscal-obligations/evaluate-overdue") {
+      const body = init?.body ? (JSON.parse(init.body.toString()) as { readonly asOfDate?: string }) : undefined;
+      const asOfDate = body?.asOfDate ? new Date(body.asOfDate) : new Date();
+      const overdue: DemoFiscalObligation[] = [];
+      for (const obligation of fiscalObligations.values()) {
+        if (obligation.status === "Pending" && new Date(obligation.dueDate) < asOfDate) {
+          obligation.status = "Overdue";
+          obligation.updatedAt = new Date().toISOString();
+          overdue.push(obligation);
+        }
+      }
+      return jsonResponse({ overdue });
+    }
+    if (method === "POST" && /^\/fiscal-obligations\/[^/]+\/fulfill$/.test(path)) {
+      const fiscalObligationId = path.split("/")[2];
+      const existing = fiscalObligations.get(fiscalObligationId);
+      if (!existing) {
+        return jsonResponse({ error: { code: "FISCAL_OBLIGATION_NOT_FOUND", message: `Fiscal Obligation ${fiscalObligationId} não encontrado.`, correlationId: "demo-corr-1" } }, 404);
+      }
+      if (existing.status === "Fulfilled") {
+        return jsonResponse({ error: { code: "FISCAL_OBLIGATION_INVALID_STATUS_TRANSITION", message: `Transição de status de Fiscal Obligation inválida: ${existing.status} → Fulfilled.`, correlationId: "demo-corr-1" } }, 409);
+      }
+      existing.status = "Fulfilled";
+      existing.fulfilledAt = new Date().toISOString();
+      existing.updatedAt = new Date().toISOString();
+      return jsonResponse(existing);
     }
 
     throw new Error(`Rota HTTP não mockada em demoApiFetchMock: ${method} ${path}`);

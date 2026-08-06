@@ -26,6 +26,7 @@ export const openapiPlugin: FastifyPluginAsync = fp(async (fastify) => {
         { name: "purchase", description: "Purchase Hub (ERP Foundation)." },
         { name: "inventory-movement", description: "Inventory Movement Hub (ERP Foundation) — ledger físico imutável." },
         { name: "production", description: "Production Hub (ERP Foundation) — transformação de insumo em Produto acabado." },
+        { name: "fiscal", description: "Fiscal Hub (ERP Foundation) — conformidade tributária de mercadoria." },
       ],
     },
   });

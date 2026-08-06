@@ -5,7 +5,7 @@ import { createTestDatabase } from "../testing/createTestDatabase.js";
 import { createManagerRegistry } from "./createManagerRegistry.js";
 
 describe("createManagerRegistry — a única alternância Fake/Real desta Sprint, centralizada", () => {
-  it("mode 'fake' constrói os oito Managers sem exigir nenhuma DatabaseHandle", () => {
+  it("mode 'fake' constrói os nove Managers sem exigir nenhuma DatabaseHandle", () => {
     const registry = createManagerRegistry("fake");
 
     expect(registry.businessProfile).toBeDefined();
@@ -16,6 +16,7 @@ describe("createManagerRegistry — a única alternância Fake/Real desta Sprint
     expect(registry.purchase).toBeDefined();
     expect(registry.inventoryMovement).toBeDefined();
     expect(registry.production).toBeDefined();
+    expect(registry.fiscal).toBeDefined();
   });
 
   it("mode 'real' sem DatabaseHandle lança erro explícito, nunca falha silenciosamente mais tarde", () => {
@@ -197,6 +198,66 @@ describe("createManagerRegistry — a única alternância Fake/Real desta Sprint
     expect(found?.consumptions).toHaveLength(1);
     expect(found?.outputs).toHaveLength(1);
     expect(await registry.production.getTotalConsumedCost(order.productionOrderId)).toBe(40);
+
+    handle.close();
+  });
+
+  it("mode 'real' — FiscalManager: registerTaxRegime -> createTaxRule -> calculateTax -> issueFiscalDocument -> cancelFiscalDocument -> registerFiscalObligation -> evaluateFiscalObligations sobre SQLite", async () => {
+    const handle = createTestDatabase();
+    const registry = createManagerRegistry("real", handle);
+
+    const { result: regime } = await registry.fiscal.registerTaxRegime({ tenantId: "tenant-1", name: "Simples Nacional" });
+
+    const { result: rule } = await registry.fiscal.createTaxRule({
+      tenantId: "tenant-1",
+      taxRegimeId: regime.taxRegimeId,
+      classification: { code: "1234.56" },
+      rate: { type: "Percentage", value: 18 },
+      validFrom: new Date("2026-01-01"),
+    });
+
+    const { result: calculation } = await registry.fiscal.calculateTax({
+      fiscalDocumentLineId: "line-1",
+      taxRegimeId: regime.taxRegimeId,
+      classification: { code: "1234.56" },
+      baseAmount: { amount: 200, currencyCode: "BRL" },
+      calculationDate: new Date("2026-06-01"),
+    });
+    expect(calculation.amount).toEqual({ amount: 36, currencyCode: "BRL" });
+    expect(calculation.taxRuleId).toBe(rule.taxRuleId);
+
+    const { result: document } = await registry.fiscal.issueFiscalDocument({
+      tenantId: "tenant-1",
+      type: "Sale",
+      orderId: "order-1",
+      lines: [
+        {
+          fiscalDocumentLineId: "line-1",
+          productId: "product-1",
+          quantity: 1,
+          unitValue: { amount: 200, currencyCode: "BRL" },
+          classification: { code: "1234.56" },
+          taxCalculation: calculation,
+        },
+      ],
+    });
+    expect(document.status).toBe("Issued");
+
+    const { result: cancelled } = await registry.fiscal.cancelFiscalDocument(document.fiscalDocumentId, "Erro de emissão");
+    expect(cancelled.status).toBe("Cancelled");
+
+    const { result: obligation } = await registry.fiscal.registerFiscalObligation({
+      tenantId: "tenant-1",
+      type: "Declaração",
+      periodicity: "Mensal",
+      dueDate: new Date("2026-01-10"),
+    });
+
+    const evaluation = await registry.fiscal.evaluateFiscalObligations(new Date("2026-02-01"));
+    expect(evaluation.result.overdue.map((o) => o.fiscalObligationId)).toEqual([obligation.fiscalObligationId]);
+
+    const found = await registry.fiscal.getFiscalDocument(document.fiscalDocumentId);
+    expect(found?.lines[0]?.taxCalculation.amount).toEqual({ amount: 36, currencyCode: "BRL" });
 
     handle.close();
   });

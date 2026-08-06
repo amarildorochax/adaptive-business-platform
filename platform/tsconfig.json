@@ -13,6 +13,7 @@
     { "path": "./packages/purchase-hub" },
     { "path": "./packages/inventory-movement-hub" },
     { "path": "./packages/production-hub" },
+    { "path": "./packages/fiscal-hub" },
     { "path": "./packages/communication-hub" },
     { "path": "./packages/content-hub" },
     { "path": "./packages/commerce-hub" },

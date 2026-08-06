@@ -392,18 +392,81 @@ Inventory Movement Hub (✅ completo — ERP-001, IMP-401–405) — depende de 
         ↓
 Production Hub (✅ completo — ERP-001, IMP-501–505) — depende de Inventory Movement Hub
         ↓
-Fiscal Hub — depende de Finance/Commerce Hub, já existentes; independente dos três anteriores, podendo ser paralelizado
-        ↓
-Financial Hub — reconciliação, extensão de Finance Hub (nunca um novo Owner, per ADR-ERP-001)
+Fiscal Hub (✅ completo — ERP-001, IMP-601–605) — depende de Finance/Commerce Hub, já existentes; independente dos quatro anteriores, foi paralelizável
 ```
 
-**Atualizado por IMP-505** (Capítulo 17, índice de status) — Production Hub torna-se o quarto domínio
-ERP integral desta plataforma, mesmo ciclo de seis etapas de Supplier/Purchase/Inventory Movement Hub,
-sem exceção nem atalho. Ver `IMP_505_PRODUCTION_WORKSPACE_REPORT.md`, "Encerramento do Production Hub",
-para as melhorias arquiteturais identificadas ao longo da série IMP-501 → IMP-505, registradas como
-referência para Fiscal Hub e Financial Hub — nenhum Hub já concluído foi alterado retroativamente.
+**Financial Hub nunca existiu como domínio próprio** — reconfirmado por IMP-601 (auditoria obrigatória, Passo 1) contra `ERP_ARCHITECTURE.md`/`FINANCIAL_HUB.md`/ADR-FN-001: todo o vocabulário que "Financial Hub" nomearia (`Invoice`/`Payment`/`Ledger Entry`/`Account Payable`/`Account Receivable`) já pertence integralmente ao Finance Hub, Official desde antes da ERP Foundation. A Sprint originalmente prevista como "IMP-601 — Financial Hub Core" foi redirecionada, com o usuário explicitamente consultado (`AskUserQuestion`) diante da contradição entre o roadmap nominal e a arquitetura oficial, para **Fiscal Hub Core** — o quinto e verdadeiro proprietário nomeado por `ERP_ARCHITECTURE.md`, Capítulo 4. Esta linha do Roadmap permanece corrigida aqui permanentemente — nenhum "Financial Hub" deve ser reintroduzido por nenhuma Sprint futura sem uma nova Change Request explícita contra ADR-FN-001.
 
-**Cada um destes domínios deverá seguir integralmente o padrão definido por este documento** — o mesmo ciclo de seis etapas (Capítulo 2), a mesma auditoria Passo 1 obrigatória (Capítulo 3), a mesma estrutura de pacote (Capítulo 4), a mesma disciplina DDD (Capítulo 5), a mesma disciplina de Persistência/HTTP/Frontend/Workspace/UX/Eventos/Limitações/Testes/Reutilização (Capítulos 6–14), verificado contra o Checklist Oficial (Capítulo 15) antes de qualquer aprovação. Nenhum processo de desenvolvimento novo deve ser criado — o processo já existe, já foi comprovado duas vezes, e está registrado neste documento.
+**Atualizado por IMP-605** (Capítulo 17, índice de status) — Fiscal Hub torna-se o quinto e último
+domínio ERP integral desta plataforma, mesmo ciclo de seis etapas de Supplier/Purchase/Inventory
+Movement/Production Hub, sem exceção nem atalho. **A ERP Foundation está oficialmente encerrada**: cinco
+domínios completos (Supplier/Purchase/Inventory Movement/Production/Fiscal), cada um com Core →
+Persistência → HTTP API → Frontend Infrastructure → Workspace, vinte e cinco Sprints de implementação
+(IMP-201 a IMP-605) sobre a mesma arquitetura, o mesmo processo, sem nenhum atalho tomado em nenhuma
+delas. Ver `IMP_605_FISCAL_WORKSPACE_REPORT.md`, "Encerramento da ERP Foundation", e o Capítulo 17-A
+abaixo, para as lições arquiteturais consolidadas das cinco séries completas.
+
+**Cada um destes domínios seguiu integralmente o padrão definido por este documento** — o mesmo ciclo de seis etapas (Capítulo 2), a mesma auditoria Passo 1 obrigatória (Capítulo 3), a mesma estrutura de pacote (Capítulo 4), a mesma disciplina DDD (Capítulo 5), a mesma disciplina de Persistência/HTTP/Frontend/Workspace/UX/Eventos/Limitações/Testes/Reutilização (Capítulos 6–14), verificado contra o Checklist Oficial (Capítulo 15) antes de qualquer aprovação. Nenhum processo de desenvolvimento novo foi criado — o processo já existia, já foi comprovado quatro vezes antes do Fiscal Hub, e está registrado neste documento. Qualquer domínio futuro da plataforma (fora da ERP Foundation) deve seguir o mesmo processo, começando pela mesma auditoria Passo 1.
+
+---
+
+## Capítulo 17-A — Lições Aprendidas da ERP Foundation
+
+Consolidado ao final de IMP-605, encerramento oficial dos cinco domínios (Supplier/Purchase/Inventory
+Movement/Production/Fiscal Hub). Cada lição abaixo já foi registrada, individualmente, no relatório da
+Sprint que a descobriu — este Capítulo existe para reuni-las em um só lugar, como referência direta para
+o próximo módulo desta plataforma, nunca para alterar retroativamente nenhum Hub já concluído.
+
+1. **A auditoria Passo 1 previne decisões silenciosas de forma comprovada, não apenas teórica.** A
+   única vez em que o roadmap nominal e a arquitetura oficial genuinamente colidiram nesta série
+   (Financial Hub vs. Fiscal Hub, IMP-601), a auditoria obrigatória — nunca a memória do executor —
+   capturou a contradição antes de qualquer código, e o `AskUserQuestion` explícito resolveu-a sem
+   nenhuma decisão unilateral. Todo domínio futuro deve manter a auditoria Passo 1 como primeiro passo
+   inegociável, precisamente por causa deste caso real.
+
+2. **"Cache mutável sem estratégia consolidada" é uma classe única, não um problema pontual — e ela
+   continua ficando mais difícil a cada domínio novo.** IMP-304 descobriu o caso base (uma lista
+   chaveada por um campo mutável, `requisitionsByStatus`); IMP-504 encontrou uma segunda variante
+   (valores escalares derivados no servidor, `totalConsumedCost`); IMP-604 encontrou uma terceira,
+   estruturalmente mais dura (duas chaves fixas e independentes exigindo remoção de entrada,
+   `pendingFiscalObligations`/`overdueFiscalObligations`). Nenhuma das três foi corrigida com uma
+   estratégia inventada — todas seguem documentadas como limitação, resolvida apenas por
+   invalidação/refetch manual no Workspace. Um Hub futuro com uma consulta agregada real deve esperar
+   encontrar uma quarta variante, nunca presumir que as três já cobrem todo caso possível.
+
+3. **Duplicidade estrutural aceita (DTOs por app, `testing/realApiServer.ts`) é, por desenho, nunca
+   extraída durante uma Sprint de implementação.** Identificada pela primeira vez em IMP-304, o mesmo
+   arquivo genérico foi copiado por IMP-404, IMP-504 e IMP-604 — quatro vezes, sempre com a mesma nota
+   "candidato real a `core/http/testing/realApiServer.ts` compartilhado, não extraído aqui" — e nunca
+   extraído em nenhuma das cinco séries completas. Esta consistência é a prova de que a disciplina "não
+   refatorar durante um Sprint de implementação" (Capítulo 3) funciona; uma Sprint de consolidação
+   transversal dedicada, recomendada desde IMP-405 e nunca executada, continua sendo o único momento
+   correto para essa extração — antes do próximo domínio da plataforma, nunca durante um dele.
+
+4. **Cross-Hub como parâmetro explícito do chamador, nunca um import direto de outro pacote de
+   domínio.** Formalizado por IMP-501 diante de uma tensão real entre o texto de `PRODUCTION_HUB.md` e a
+   instrução da própria Sprint, e reaplicado sem exceção por IMP-605 (`startProduction`/
+   `availableQuantities` informado manualmente pelo operador, nunca uma composição oculta com
+   `core/inventory-movement/`; `IssueFiscalDocumentDrawer` referenciando um `TaxCalculation` já
+   produzido por outra seção, nunca recalculado). Todo domínio futuro com uma dependência real de dado
+   de outro Hub deve seguir a mesma disciplina.
+
+5. **A auditoria dos bugs históricos (PATCH-clobber/FK second-write/Ledger immutability, e suas
+   variantes de Frontend — Undefined `useQuery`/Mutable Query Keys/Append-only Cache) deve ser repetida
+   por inteiro em cada nova Sprint, mesmo quando a conclusão é sempre "não se aplica".** As cinco séries
+   completas nunca reintroduziram nenhum dos três bugs históricos de HTTP — não porque o risco
+   desapareceu, mas porque cada Sprint auditou de novo, por si mesma, sem presumir a conclusão da
+   anterior. Um domínio futuro que pule essa auditoria por "já sabemos que não se aplica" quebra a
+   única razão pela qual ela nunca se materializou.
+
+6. **Nem todo domínio tem uma Query de topo "tenant-wide" — e travar o Workspace nessa suposição é um
+   bug real, não apenas uma limitação a documentar.** Os quatro Workspaces anteriores sempre gatearam o
+   conteúdo em uma Query de topo que devolve lista (`[]` continua sendo sucesso). IMP-605 encontrou o
+   primeiro caso genuíno de uma Query de topo singular e opcional (`useTaxRegime`, `undefined` é um
+   estado de negócio honesto, não um carregamento) — gatear nessa presença travaria permanentemente todo
+   Tenant novo. Corrigido gateando exclusivamente em `isLoading`/`isError`, nunca na presença do dado.
+   Um domínio futuro cuja Query de topo mais próxima de tenant-wide também for singular deve repetir
+   esta mesma verificação, nunca copiar cegamente o padrão de gate por lista.
 
 ---
 

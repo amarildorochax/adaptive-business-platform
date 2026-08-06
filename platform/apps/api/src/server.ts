@@ -9,6 +9,7 @@ import { authRoutes } from "./routes/auth.js";
 import { businessProfileRoutes } from "./routes/businessProfile.js";
 import { brandingRoutes } from "./routes/branding.js";
 import { crmRoutes } from "./routes/crm.js";
+import { fiscalRoutes } from "./routes/fiscal.js";
 import { healthRoutes } from "./routes/health.js";
 import { inventoryMovementRoutes } from "./routes/inventoryMovement.js";
 import { productionRoutes } from "./routes/production.js";
@@ -52,6 +53,7 @@ export async function buildServer(options: BuildServerOptions = {}): Promise<Fas
   await fastify.register(purchaseRoutes);
   await fastify.register(inventoryMovementRoutes);
   await fastify.register(productionRoutes);
+  await fastify.register(fiscalRoutes);
 
   return fastify;
 }

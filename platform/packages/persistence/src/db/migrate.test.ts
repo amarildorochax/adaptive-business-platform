@@ -52,6 +52,12 @@ const EXPECTED_TABLES = [
   "production_orders",
   "production_consumptions",
   "production_outputs",
+  // 0006_fiscal_hub.sql — Fiscal Persistence (IMP-602)
+  "tax_regimes",
+  "tax_rules",
+  "fiscal_documents",
+  "fiscal_document_lines",
+  "fiscal_obligations",
 ] as const;
 
 describe("runMigrations", () => {
@@ -74,7 +80,7 @@ describe("runMigrations", () => {
     expect(() => runMigrations(handle)).not.toThrow();
 
     const applied = handle.db.prepare("SELECT COUNT(*) as count FROM _migrations").get() as { count: number };
-    expect(applied.count).toBe(6);
+    expect(applied.count).toBe(7);
     handle.close();
   });
 });

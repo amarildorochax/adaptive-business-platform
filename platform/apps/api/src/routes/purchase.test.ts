@@ -59,20 +59,18 @@ describe("Rotas HTTP do Purchase Hub — Purchase Order", () => {
   });
 
   /**
-   * BUG CONHECIDO, encontrado por esta Sprint, NÃO corrigido (Persistência congelada, IMP-303 não
-   * pode alterar `packages/persistence`) — documentado em `IMP_303_PURCHASE_HTTP_API_REPORT.md`,
-   * Capítulo "Divergências Encontradas". `SqlitePurchaseOrderRepository.update` (IMP-302) regrava
+   * BUG-001 (corrigido) — `SqlitePurchaseOrderRepository.update` (IMP-302) regravava
    * `purchase_order_items` por completo (`DELETE` + `INSERT`, mesmo padrão de
    * `SqliteSupplierRepository.replaceContacts`) — mas, diferente de `supplier_contacts`,
    * `purchase_order_items` é referenciada por FOREIGN KEY real a partir de `receiving_lines`
    * (IMP-302, Capítulo 4). A partir do segundo `registerReceiving` contra o mesmo Purchase Order, o
-   * `DELETE` viola essa FOREIGN KEY (a primeira Receiving já referencia o item), e a chamada falha
-   * com 500. `it.fails` — este teste passa HOJE porque a asserção do comportamento correto (201,
-   * `fullyReceived: true`) falha; quando a Persistência for corrigida (Amendment proposta no
-   * relatório), este teste passará a falhar por completo, sinalizando que `it.fails` deve ser
-   * removido.
+   * `DELETE` violava essa FOREIGN KEY (a primeira Receiving já referencia o item), e a chamada falhava
+   * com 500. Corrigido em `SqlitePurchaseOrderRepository.replaceItems` (diff seletivo UPDATE/INSERT/
+   * DELETE, nunca excluindo uma linha ainda referenciada) — ver
+   * `docs/implementation/BUG_001_REGISTER_RECEIVING_HTTP500.md`. Este teste, antes marcado
+   * `it.fails`, agora é a asserção de regressão permanente do comportamento correto.
    */
-  it.fails("segundo registerReceiving contra o mesmo item deveria completar o recebimento, mas falha por FOREIGN KEY em purchase_order_items (bug de IMP-302)", async () => {
+  it("segundo registerReceiving contra o mesmo item completa o recebimento (regressão de BUG-001)", async () => {
     const fastify = await buildTestServer();
     const created = await fastify.inject({ method: "POST", url: "/purchase-orders", payload: { tenantId: "tenant-1", supplierId: "supplier-1" } });
     const purchaseOrder = created.json() as { purchaseOrderId: string };

@@ -37,6 +37,9 @@
       "path": "../production-hub"
     },
     {
+      "path": "../fiscal-hub"
+    },
+    {
       "path": "../purchase-hub"
     },
     {

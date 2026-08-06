@@ -111,6 +111,67 @@ describe("SqlitePurchaseOrderRepository — CRUD completo", () => {
     handle.close();
   });
 
+  it("BUG-001 (regressão) — update sobrevive quando um item já referenciado por receiving_lines (de uma Receiving anterior) permanece na lista, sem violar FOREIGN KEY", async () => {
+    const handle = createTestDatabase();
+    const purchaseOrderRepository = new SqlitePurchaseOrderRepository(handle.db);
+    const receivingRepository = new SqliteReceivingRepository(handle.db);
+
+    const purchaseOrder = await purchaseOrderRepository.create(
+      buildPurchaseOrder({
+        status: "Sent",
+        items: [
+          {
+            purchaseOrderItemId: "item-1",
+            purchaseOrderId: "po-1",
+            productId: "product-1",
+            quantityOrdered: 10,
+            quantityReceived: 0,
+            acquisitionCost: { amount: 10, currencyCode: "BRL" },
+            status: "Pending",
+          },
+        ],
+      }),
+    );
+
+    // Primeira Receiving — cria uma `receiving_lines` que referencia `item-1` por FOREIGN KEY,
+    // exatamente como `ReceivingService.register` (Core) faz depois de `purchaseOrderRepository.update`.
+    await purchaseOrderRepository.update({
+      ...purchaseOrder,
+      items: [{ ...purchaseOrder.items[0]!, quantityReceived: 4, status: "PartiallyReceived" }],
+    });
+    await receivingRepository.create({
+      receivingId: "receiving-1",
+      purchaseOrderId: "po-1",
+      tenantId: "tenant-1",
+      lines: [{ purchaseOrderItemId: "item-1", quantityReceived: 4 }],
+      receivedAt: new Date("2026-02-01T00:00:00.000Z"),
+    });
+
+    // Segunda Receiving — antes de BUG-001, este `update` (chamado por `replaceItems`) violava a
+    // FOREIGN KEY que `receiving_lines` já mantém sobre `item-1`, propagando um erro de constraint
+    // bruto (nunca um PurchaseDomainError). Deve, agora, apenas atualizar a linha existente.
+    await expect(
+      purchaseOrderRepository.update({
+        ...purchaseOrder,
+        items: [{ ...purchaseOrder.items[0]!, quantityReceived: 10, status: "Received" }],
+        status: "Received",
+      }),
+    ).resolves.not.toThrow();
+
+    const found = await purchaseOrderRepository.findById("po-1");
+    expect(found?.status).toBe("Received");
+    expect(found?.items).toHaveLength(1);
+    expect(found?.items[0]?.quantityReceived).toBe(10);
+
+    // A `receiving_lines` da primeira Receiving continua íntegra — nenhuma linha órfã, nenhuma
+    // duplicação, exatamente o mesmo `item-1` (nunca um novo id gerado pelo diff).
+    const receivings = await receivingRepository.findByPurchaseOrder("po-1");
+    expect(receivings).toHaveLength(1);
+    expect(receivings[0]?.lines).toEqual([{ purchaseOrderItemId: "item-1", quantityReceived: 4 }]);
+
+    handle.close();
+  });
+
   it("findBySupplier, findByStatus e findOpen refletem o estado real, isolados por Tenant/Supplier", async () => {
     const handle = createTestDatabase();
     const repository = new SqlitePurchaseOrderRepository(handle.db);

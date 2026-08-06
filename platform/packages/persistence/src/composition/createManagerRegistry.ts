@@ -43,6 +43,20 @@ import {
   FakeTimelineEventRepository,
 } from "@abp/crm-hub/testing";
 import {
+  FiscalDocumentIssuanceService,
+  FiscalManager,
+  FiscalObligationTrackingService,
+  TaxCalculationService,
+  TaxRegimeService,
+  TaxRuleService,
+} from "@abp/fiscal-hub";
+import {
+  FakeFiscalDocumentRepository,
+  FakeFiscalObligationRepository,
+  FakeTaxRegimeRepository,
+  FakeTaxRuleRepository,
+} from "@abp/fiscal-hub/testing";
+import {
   AccessAuditService,
   AuthenticationService,
   AuthorizationService,
@@ -127,6 +141,10 @@ import { SqliteBusinessProfileLifecycleStateRepository } from "../repositories/b
 import { SqliteBusinessProfileRepository } from "../repositories/business-profile/SqliteBusinessProfileRepository.js";
 import { SqliteMaturityRecordRepository } from "../repositories/business-profile/SqliteMaturityRecordRepository.js";
 import { SqliteContactRepository } from "../repositories/crm/SqliteContactRepository.js";
+import { SqliteFiscalDocumentRepository } from "../repositories/fiscal/SqliteFiscalDocumentRepository.js";
+import { SqliteFiscalObligationRepository } from "../repositories/fiscal/SqliteFiscalObligationRepository.js";
+import { SqliteTaxRegimeRepository } from "../repositories/fiscal/SqliteTaxRegimeRepository.js";
+import { SqliteTaxRuleRepository } from "../repositories/fiscal/SqliteTaxRuleRepository.js";
 import { SqliteCustomerRepository } from "../repositories/crm/SqliteCustomerRepository.js";
 import { SqliteLeadRepository } from "../repositories/crm/SqliteLeadRepository.js";
 import { SqliteOpportunityRepository } from "../repositories/crm/SqliteOpportunityRepository.js";
@@ -167,6 +185,7 @@ export interface ManagerRegistry {
   readonly purchase: PurchaseManager;
   readonly inventoryMovement: InventoryMovementManager;
   readonly production: ProductionManager;
+  readonly fiscal: FiscalManager;
 }
 
 /**
@@ -180,11 +199,14 @@ export interface ManagerRegistry {
  * testes existentes que dependem de Fakes.
  *
  * Escopo: Business Profile, Branding, CRM (FUN-003), IAM Core (FUN-100), Supplier Hub (IMP-202),
- * Purchase Hub (IMP-302), Inventory Movement Hub (IMP-402) e, desde a IMP-502, Production Hub — as
- * trinta e seis Repository Interfaces destes oito domínios já possuem implementação real
- * (`../repositories`); os demais domínios permanecem exclusivamente Fake, nunca antecipados aqui.
- * (Comentário desatualizado desde IMP-202, que já havia adicionado Supplier Hub sem revisar esta
- * contagem — corrigido pela IMP-402 e novamente por esta Sprint ao tocar este mesmo bloco.)
+ * Purchase Hub (IMP-302), Inventory Movement Hub (IMP-402), Production Hub (IMP-502) e, desde a
+ * IMP-602, Fiscal Hub — as quarenta Repository Interfaces destes nove domínios já possuem
+ * implementação real (`../repositories`); os demais domínios permanecem exclusivamente Fake, nunca
+ * antecipados aqui. Finance Hub (`@abp/finance-hub`) não é um desses nove domínios — nunca foi
+ * incorporado a este Composition Root, em nenhuma Sprint, Fake ou real; Fiscal Hub não depende dele
+ * e não o afeta. (Comentário desatualizado desde IMP-202, que já havia adicionado Supplier Hub sem
+ * revisar esta contagem — corrigido pela IMP-402, novamente pela IMP-502, e novamente por esta Sprint
+ * ao tocar este mesmo bloco.)
  *
  * `inventoryMovement` é o primeiro Manager cuja construção Fake não cabe em um único `mode === "real"
  * ? new Sqlite... : new Fake..." por linha — `FakeStockPositionRepository` (`@abp/inventory-movement-hub/testing`)
@@ -341,5 +363,18 @@ export function createManagerRegistry(mode: RepositoryMode, handle?: DatabaseHan
     workCenters: new WorkCenterService(mode === "real" ? new SqliteWorkCenterRepository(handle!.db) : new FakeWorkCenterRepository()),
   });
 
-  return { businessProfile, branding, crm, iam, supplier, purchase, inventoryMovement, production };
+  const taxRuleRepository = mode === "real" ? new SqliteTaxRuleRepository(handle!.db) : new FakeTaxRuleRepository();
+  const fiscal = new FiscalManager({
+    taxRegimes: new TaxRegimeService(mode === "real" ? new SqliteTaxRegimeRepository(handle!.db) : new FakeTaxRegimeRepository()),
+    taxRules: new TaxRuleService(taxRuleRepository),
+    taxCalculation: new TaxCalculationService(taxRuleRepository),
+    documents: new FiscalDocumentIssuanceService(
+      mode === "real" ? new SqliteFiscalDocumentRepository(handle!.db) : new FakeFiscalDocumentRepository(),
+    ),
+    obligations: new FiscalObligationTrackingService(
+      mode === "real" ? new SqliteFiscalObligationRepository(handle!.db) : new FakeFiscalObligationRepository(),
+    ),
+  });
+
+  return { businessProfile, branding, crm, iam, supplier, purchase, inventoryMovement, production, fiscal };
 }

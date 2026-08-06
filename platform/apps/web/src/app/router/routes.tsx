@@ -17,6 +17,7 @@ const ProductHubPage = lazy(() => import("@/pages/product-hub/ProductHubPage").t
 const InventoryPage = lazy(() => import("@/pages/inventory/InventoryPage").then((m) => ({ default: m.InventoryPage })));
 const InventoryMovementPage = lazy(() => import("@/pages/inventory-movement/InventoryMovementPage").then((m) => ({ default: m.InventoryMovementPage })));
 const ProductionPage = lazy(() => import("@/pages/production/ProductionPage").then((m) => ({ default: m.ProductionPage })));
+const FiscalPage = lazy(() => import("@/pages/fiscal/FiscalPage").then((m) => ({ default: m.FiscalPage })));
 const PurchasePage = lazy(() => import("@/pages/purchases/PurchasePage").then((m) => ({ default: m.PurchasePage })));
 const SupplierPage = lazy(() => import("@/pages/suppliers/SupplierPage").then((m) => ({ default: m.SupplierPage })));
 
@@ -60,6 +61,7 @@ export function createAppRoutes(): RouteObject[] {
         { path: "inventory", element: <InventoryPage /> },
         { path: "inventory-movement", element: <InventoryMovementPage /> },
         { path: "production", element: <ProductionPage /> },
+        { path: "fiscal", element: <FiscalPage /> },
         { path: "purchases", element: <PurchasePage /> },
         { path: "suppliers", element: <SupplierPage /> },
         ...PLANNED_DOMAINS.map((domain) => ({

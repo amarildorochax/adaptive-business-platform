@@ -15,6 +15,7 @@
     { "path": "../../packages/business-profile" },
     { "path": "../../packages/branding" },
     { "path": "../../packages/crm-hub" },
+    { "path": "../../packages/fiscal-hub" },
     { "path": "../../packages/infrastructure" },
     { "path": "../../packages/inventory-movement-hub" },
     { "path": "../../packages/persistence" },

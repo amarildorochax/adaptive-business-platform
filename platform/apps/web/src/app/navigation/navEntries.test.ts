@@ -7,8 +7,8 @@ describe("NAV_ENTRIES — fonte única de verdade da navegação", () => {
     expect(new Set(paths).size).toBe(paths.length);
   });
 
-  it("lista exatamente quatorze módulos ativos (Dashboard + treze domínios conectados, Produção incluída desde a IMP-505) e oito planejados", () => {
-    expect(NAV_ENTRIES.filter((entry) => entry.status === "active")).toHaveLength(14);
+  it("lista exatamente quinze módulos ativos (Dashboard + quatorze domínios conectados, Fiscal incluído desde a IMP-605) e oito planejados", () => {
+    expect(NAV_ENTRIES.filter((entry) => entry.status === "active")).toHaveLength(15);
     expect(NAV_ENTRIES.filter((entry) => entry.status === "planned")).toHaveLength(8);
   });
 

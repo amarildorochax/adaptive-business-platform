@@ -13,6 +13,7 @@ import {
   Package,
   Palette,
   Plug,
+  Receipt,
   Settings2,
   ShoppingCart,
   Sparkles,
@@ -44,7 +45,11 @@ import {
  * `IMP_405_INVENTORY_MOVEMENT_WORKSPACE_REPORT.md`. `/production` (IMP-505) é a mesma exceção —
  * `ProductionManager` roda em `apps/api` real, consumido exclusivamente por HTTP via
  * `core/production/` (IMP-504) — rota inteiramente nova, sem placeholder anterior a substituir (nunca
- * existiu uma lente sobre `CommerceManager` para "Produção").
+ * existiu uma lente sobre `CommerceManager` para "Produção"). `/fiscal` (IMP-605) é a mesma exceção —
+ * `FiscalManager` roda em `apps/api` real, consumido exclusivamente por HTTP via `core/fiscal/`
+ * (IMP-604) — rota inteiramente nova, encerrando oficialmente a ERP Foundation (Supplier/Purchase/
+ * Inventory Movement/Production/Fiscal, todos completos: Core → Persistência → HTTP → Frontend
+ * Infrastructure → Workspace).
  * `status: "planned"` —
  * o Manager já está mapeado (relatório do FUN-001, Seção 2) mas ainda não conectado; a rota existe
  * (per "preparar estrutura para os demais Managers ainda não utilizados") e aponta para
@@ -87,6 +92,7 @@ export const NAV_ENTRIES: readonly NavEntry[] = [
   { path: "/inventory", label: "Estoque", status: "active", icon: Package, category: "Operação" },
   { path: "/inventory-movement", label: "Movimentação de Estoque", status: "active", icon: ArrowRightLeft, category: "Operação" },
   { path: "/production", label: "Produção", status: "active", icon: Factory, category: "Operação" },
+  { path: "/fiscal", label: "Fiscal", status: "active", icon: Receipt, category: "Operação" },
   { path: "/purchases", label: "Compras", status: "active", icon: Truck, category: "Operação" },
   { path: "/suppliers", label: "Fornecedores", status: "active", icon: Handshake, category: "Operação" },
   { path: "/finance", label: "Finance", status: "planned", icon: Wallet, category: "Operação" },
