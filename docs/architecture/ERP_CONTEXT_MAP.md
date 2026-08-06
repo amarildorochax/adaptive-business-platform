@@ -13,7 +13,7 @@ Este documento nasce em status **Draft** (`DOCUMENTATION_CONSTITUTION.md`, §8.1
 ## 1. Context Map
 
 ```
-                              ERP CONTEXT MAP — 17 PROPRIETÁRIOS
+                              ERP CONTEXT MAP — 19 PROPRIETÁRIOS
    ┌───────────────────────────────────────────────────────────────────────────┐
    │                                                                                   │
    │   DEMAND SIDE (já existente)              SUPPLY SIDE (novo — ERP-001)              │
@@ -176,8 +176,8 @@ Verificação de ciclo: seguindo cada seta a partir de qualquer nó, nenhum cami
 
 ## 6. Resumo Numérico
 
-Dezessete proprietários totais na plataforma após esta Sprint (doze já Frozen/Official de `DOMAIN_OWNERSHIP_MATRIX.md`, mais Content Hub e Commerce Hub já propostos pela série BP-001–008, mais cinco novos desta Sprint: Purchase, Supplier, Inventory Movement, Production, Fiscal) — nenhum deles com ownership sobreposto a outro, verificado capítulo a capítulo em cada documento desta série.
+Dezenove proprietários totais na plataforma após esta Sprint (doze já Frozen/Official de `DOMAIN_OWNERSHIP_MATRIX.md`, mais Content Hub e Commerce Hub já propostos pela série BP-001–008, mais cinco novos desta Sprint: Purchase, Supplier, Inventory Movement, Production, Fiscal) — nenhum deles com ownership sobreposto a outro, verificado capítulo a capítulo em cada documento desta série. (Corrigido por DOC-001 — a versão original desta Sprint declarava "Dezessete", uma soma aritmeticamente incorreta de 12+2+5; contagem correta é 19.)
 
-Trinta e um novos Eventos catalogados em `DOMAIN_EVENT_CATALOG.md`, zero colisão de nome com os já catalogados em `EVENT_CATALOG.md`.
+Trinta e seis novos Eventos catalogados em `DOMAIN_EVENT_CATALOG.md`, zero colisão de nome com os já catalogados em `EVENT_CATALOG.md`. (Corrigido por DOC-001 — a versão original desta Sprint declarava "Trinta e um"; a contagem direta do catálogo e do código-fonte de cada Hub — `SupplierEvent`/`PurchaseEvent`/`InventoryEvent`/`ProductionEvent`/`FiscalEvent`, 7+9+7+7+6 — totaliza 36.)
 
 Zero nova Entidade duplicada — verificação cruzada de cada Entidade nova desta Sprint contra `DOMAIN_OWNERSHIP_MATRIX.md`, Capítulo 4, documentada individualmente em cada Nota de Posicionamento Documental dos sete documentos desta série.

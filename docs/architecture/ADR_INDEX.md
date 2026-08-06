@@ -6,11 +6,11 @@
 
 ## 1. Introdução
 
-Este documento é o índice oficial, único e definitivo de todas as Architecture Decision Records — ADRs — já registradas pela Adaptive Business Platform em seus vinte e quatro documentos proprietários. Ele não cria nenhuma decisão arquitetural nova, não altera o texto de nenhum ADR já existente, e não substitui nenhum documento proprietário — cada ADR aqui listado permanece integralmente definido, com seu contexto completo e sua justificativa detalhada, exclusivamente em seu documento de origem. O que este documento adiciona é a capacidade de localizar, classificar e auditar qualquer decisão arquitetural já tomada pela plataforma sem precisar percorrer, um a um, todos os documentos já publicados nesta série.
+Este documento é o índice oficial, único e definitivo de todas as Architecture Decision Records — ADRs — já registradas pela Adaptive Business Platform em seus trinta e dois documentos proprietários. Ele não cria nenhuma decisão arquitetural nova, não altera o texto de nenhum ADR já existente, e não substitui nenhum documento proprietário — cada ADR aqui listado permanece integralmente definido, com seu contexto completo e sua justificativa detalhada, exclusivamente em seu documento de origem. O que este documento adiciona é a capacidade de localizar, classificar e auditar qualquer decisão arquitetural já tomada pela plataforma sem precisar percorrer, um a um, todos os documentos já publicados nesta série.
 
-Architecture Decision Record é o formato através do qual esta plataforma registra, de forma permanente, uma decisão de arquitetura relevante — não apenas o que foi decidido, mas por que, e qual alternativa foi descartada e por qual razão. Este formato já foi aplicado de forma consistente em cada um dos vinte e quatro documentos proprietários desta série, sempre com a mesma estrutura: um identificador numerado, um título que resume a decisão, e um contexto que explica sua motivação.
+Architecture Decision Record é o formato através do qual esta plataforma registra, de forma permanente, uma decisão de arquitetura relevante — não apenas o que foi decidido, mas por que, e qual alternativa foi descartada e por qual razão. Este formato já foi aplicado de forma consistente em cada um dos trinta e dois documentos proprietários desta série, sempre com a mesma estrutura: um identificador numerado, um título que resume a decisão, e um contexto que explica sua motivação.
 
-A importância da rastreabilidade de decisão arquitetural cresce proporcionalmente ao número de documentos e de módulos já existentes — com trezentas e vinte e sete decisões já registradas ao longo de vinte e quatro documentos, nenhum Engenheiro ou Arquiteto consegue mais reter de memória onde cada decisão específica foi tomada, nem se uma decisão semelhante já existe em outro lugar da plataforma antes de propor uma nova.
+A importância da rastreabilidade de decisão arquitetural cresce proporcionalmente ao número de documentos e de módulos já existentes — com trezentas e cinquenta e sete decisões já registradas ao longo de trinta e dois documentos (incorporados os oito documentos da série ERP Foundation por DOC-001), nenhum Engenheiro ou Arquiteto consegue mais reter de memória onde cada decisão específica foi tomada, nem se uma decisão semelhante já existe em outro lugar da plataforma antes de propor uma nova.
 
 Governança arquitetural é o propósito central deste documento — ele existe para que toda evolução futura da Adaptive Business Platform seja informada pelo histórico completo de decisão já tomada, nunca repetindo uma discussão já resolvida, nunca introduzindo uma decisão que contradiga silenciosamente outra já registrada em documento distinto.
 
@@ -18,19 +18,19 @@ Evolução controlada é a garantia que este índice sustenta — porque toda de
 
 A necessidade de um índice consolidado como este segue exatamente o mesmo raciocínio que já justificou cada um dos cinco documentos de GOVERNANCE anteriores — `DOMAIN_OWNERSHIP_MATRIX.md` resolveu a pergunta "quem é dono de cada conceito"; `EVENT_CATALOG.md`, `COMMAND_CATALOG.md` e `QUERY_CATALOG.md` resolveram a pergunta "qual é o contrato de cada Evento, Command e Query"; `EVENT_INTERACTION_MATRIX.md` resolveu a pergunta "como os módulos se comunicam entre si". Este documento resolve uma pergunta distinta e final: "por que a plataforma é construída da forma como é, e onde essa razão foi originalmente registrada". Nenhum dos cinco documentos anteriores foi desenhado para responder a essa pergunta específica — cada um organiza sua informação em torno de seu próprio objeto de consolidação, nunca em torno do histórico de decisão que a justifica.
 
-Um segundo aspecto que distingue este índice de qualquer documento anterior desta série é sua natureza estritamente derivada — ele não introduz nenhuma informação que não exista já, em forma mais completa, em algum dos vinte e quatro documentos proprietários. Isso o torna, ao mesmo tempo, o documento mais simples de manter consistente — nenhuma nova decisão é tomada aqui, apenas referenciada — e o mais dependente de disciplina de atualização contínua, porque sua utilidade inteira depende de refletir, com fidelidade, o estado real de decisão já registrado em cada documento de origem.
+Um segundo aspecto que distingue este índice de qualquer documento anterior desta série é sua natureza estritamente derivada — ele não introduz nenhuma informação que não exista já, em forma mais completa, em algum dos trinta e dois documentos proprietários. Isso o torna, ao mesmo tempo, o documento mais simples de manter consistente — nenhuma nova decisão é tomada aqui, apenas referenciada — e o mais dependente de disciplina de atualização contínua, porque sua utilidade inteira depende de refletir, com fidelidade, o estado real de decisão já registrado em cada documento de origem.
 
 ---
 
 ## 2. Objetivos
 
-Este índice garante centralização — toda decisão arquitetural já tomada pela plataforma é localizável a partir de um único documento, independentemente de em qual dos vinte e quatro documentos proprietários ela foi originalmente registrada.
+Este índice garante centralização — toda decisão arquitetural já tomada pela plataforma é localizável a partir de um único documento, independentemente de em qual dos trinta e dois documentos proprietários ela foi originalmente registrada.
 
 Este índice garante rastreabilidade — a relação entre uma decisão e as decisões anteriores que a motivaram, já mencionadas em cada ADR através de referência cruzada, é consolidada aqui em uma visão de dependência completa.
 
 Este índice garante consistência — ao expor todas as decisões lado a lado, ele torna imediatamente visível qualquer contradição potencial entre documentos, permitindo que ela seja resolvida antes de se tornar um problema de implementação real.
 
-Este índice facilita auditoria — um Auditor de conformidade arquitetural consulta este documento como ponto de entrada único, em vez de precisar localizar manualmente a seção de ADR de cada um dos vinte e quatro documentos.
+Este índice facilita auditoria — um Auditor de conformidade arquitetural consulta este documento como ponto de entrada único, em vez de precisar localizar manualmente a seção de ADR de cada um dos trinta e dois documentos.
 
 Este índice garante reutilização — antes de propor uma nova decisão arquitetural, um Arquiteto consulta este índice para verificar se uma decisão equivalente já existe em outro domínio, evitando duplicação de raciocínio já resolvido.
 
@@ -435,6 +435,80 @@ Esta seção organiza todo ADR já registrado pela Adaptive Business Platform, a
 
 `EVENT_INTERACTION_MATRIX.md` registra vinte ADRs, consolidando a ausência de Ciclo, a unidirecionalidade de toda interação, e a declaração formal de conclusão da governança de interação da plataforma — listados integralmente em seu próprio Capítulo 12.
 
+### ERP FOUNDATION
+
+Categoria incorporada por DOC-001 (2026-08-06) — dos onze documentos produzidos pela Sprint ERP-001 (`ERP_ARCHITECTURE.md`, Nota de Posicionamento), oito registram ADR e, ao todo, somam trinta decisões. `ERP_ARCHITECTURE.md` é o documento mestre, registrando as cinco decisões de reconciliação de mais alto nível da série; cinco dos sete documentos restantes são novos proprietários de conceito (`SUPPLIER_HUB.md`, `PURCHASE_HUB.md`, `INVENTORY_MOVEMENT_HUB.md`, `PRODUCTION_HUB.md`, `FISCAL_HUB.md`); dois são documentos de reconciliação que não introduzem ownership novo (`ORDER_HUB.md`, `FINANCIAL_HUB.md`). Os outros três documentos da Sprint (`DOMAIN_EVENT_CATALOG.md`, `ERP_CONTEXT_MAP.md`, `ERP_FOUNDATION_REPORT.md`) são consolidações e relatórios, sem seção de ADR própria — não contam nesta categoria.
+
+`ERP_ARCHITECTURE.md` registra cinco ADRs:
+
+| ID | Título | Relacionados |
+|---|---|---|
+| ADR-ERP-001 | Cinco novos proprietários, não dez | `DOMAIN_OWNERSHIP_MATRIX.md`, Cap. 11 |
+| ADR-ERP-002 | Inventory Movement Hub é o eixo central | `INVENTORY_MOVEMENT_HUB.md`, ADR-IM-001 |
+| ADR-ERP-003 | Physical Before Financial em todo o ERP Foundation | — |
+| ADR-ERP-004 | Nenhum dos cinco novos Hubs calcula seu próprio indicador consolidado | `DOMAIN_OWNERSHIP_MATRIX.md`, ADR-016 |
+| ADR-ERP-005 | Nenhum Agente de IA descrito possui autoridade de escrita | `AI_HUB.md`, ADR-009 |
+
+`SUPPLIER_HUB.md` registra três ADRs:
+
+| ID | Título | Relacionados |
+|---|---|---|
+| ADR-SU-001 | Supplier e Customer/Organization são Entidades distintas, mesmo sob o mesmo CNPJ | `DOMAIN_OWNERSHIP_MATRIX.md` |
+| ADR-SU-002 | Supplier Performance Record é sempre derivado de fato observado, nunca de avaliação subjetiva nesta fase | `ERP_ARCHITECTURE.md`, Cap. 3 |
+| ADR-SU-003 | Supplier Catalog Item.listPrice nunca é a fonte de verdade de Purchase Order Item.acquisitionCost | — |
+
+`PURCHASE_HUB.md` registra quatro ADRs:
+
+| ID | Título | Relacionados |
+|---|---|---|
+| ADR-PU-001 | Procurement é a camada estratégica do Purchase Hub, não um Owner separado | `DOMAIN_OWNERSHIP_MATRIX.md`, Cap. 3 |
+| ADR-PU-002 | Purchase Order nunca cria Product implicitamente | — |
+| ADR-PU-003 | Receiving é imutável; correção é sempre um novo registro | `EVENT_CATALOG.md`, Cap. 3 |
+| ADR-PU-004 | Aprovação de Purchase Order é governada por alçada configurável, nunca por regra fixa interna | — |
+
+`INVENTORY_MOVEMENT_HUB.md` registra quatro ADRs:
+
+| ID | Título | Relacionados |
+|---|---|---|
+| ADR-IM-001 | Stock Movement é elevado a Bounded Context próprio, separado de Commerce Hub | `COMMERCE_HUB_ARCHITECTURE.md`, Cap. 25 |
+| ADR-IM-002 | Stock Position é sempre projeção recalculada, nunca campo diretamente editável | `FINANCE_DOMAIN_BLUEPRINT.md` |
+| ADR-IM-003 | Stock Location é Capability opcional, nunca obrigatória | `BUSINESS_PROFILE_ENGINE.md` |
+| ADR-IM-004 | Expiração de Stock Reservation é responsabilidade do Automation Engine, nunca de um agendador interno | `ADR_INDEX.md`, ADR-006 (Automation Engine) |
+
+`PRODUCTION_HUB.md` registra quatro ADRs:
+
+| ID | Título | Relacionados |
+|---|---|---|
+| ADR-PD-001 | Production Hub e "Manufacturing Hub" são o mesmo Bounded Context | `ARCHITECTURE_RECONCILIATION_AND_GOVERNANCE.md`, Cap. 11 |
+| ADR-PD-002 | Bill of Materials é sempre versionada, nunca editada in-place | — |
+| ADR-PD-003 | Divergência entre planejado e realizado é sempre registrada, nunca corrigida silenciosamente | — |
+| ADR-PD-004 | Production Order nunca inicia com insumo insuficiente | — |
+
+`FISCAL_HUB.md` registra quatro ADRs:
+
+| ID | Título | Relacionados |
+|---|---|---|
+| ADR-FI-001 | Fiscal Document é distinto de Financial Document, mesmo quando originados do mesmo Order | `COMMERCE_HUB_ARCHITECTURE.md`, Cap. 23 |
+| ADR-FI-002 | Tax Calculation é sempre determinístico e nunca recalculado retroativamente | — |
+| ADR-FI-003 | Fiscal Hub nunca integra diretamente com autoridade tributária externa | `DOMAIN_OWNERSHIP_MATRIX.md`, ADR-012 |
+| ADR-FI-004 | Emissão fiscal é Capability opcional, nunca bloqueante da venda | `BUSINESS_PROFILE_ENGINE.md` |
+
+`FINANCIAL_HUB.md` (reconciliação, sem novo Owner) registra três ADRs:
+
+| ID | Título | Relacionados |
+|---|---|---|
+| ADR-FN-001 | Nenhum novo Owner financeiro é criado por esta Sprint | `DOMAIN_OWNERSHIP_MATRIX.md`, Cap. 11 |
+| ADR-FN-002 | Toda nova obrigação financeira do ERP Foundation nasce de Evento consumido, nunca de escrita externa | — |
+| ADR-FN-003 | Purchase Hub e Production Hub nunca consultam o resultado financeiro de sua própria publicação | — |
+
+`ORDER_HUB.md` (reconciliação, sem novo Owner; inclui Pricing) registra três ADRs:
+
+| ID | Título | Relacionados |
+|---|---|---|
+| ADR-OR-001 | Nenhum novo Owner de pedido é criado por esta Sprint | `DOMAIN_OWNERSHIP_MATRIX.md`, Cap. 11 |
+| ADR-OR-002 | Fulfillment de Order depende de Stock Reservation real, nunca de inferência otimista | — |
+| ADR-OR-003 | Pricing não recebe novo Owner; precificação orientada a custo é um contrato de leitura, nunca uma Entidade nova | — |
+
 ```
                 RESUMO NUMÉRICO DO CATÁLOGO
    ┌───────────────────────────────────────────────────────────┐
@@ -449,10 +523,15 @@ Esta seção organiza todo ADR já registrado pela Adaptive Business Platform, a
    │  GOVERNANCE:               97 ADRs (Ownership Matrix, Event,                                 │
    │                            Command, Query Catalog, Interaction                                   │
    │                            Matrix)                                                                  │
+   │  ERP FOUNDATION:           30 ADRs (ERP_ARCHITECTURE, Supplier,                                        │
+   │                            Purchase, Inventory Movement,                                                  │
+   │                            Production, Fiscal, Financial, Order)                                            │
    │                                                                │
-   │  TOTAL:                    327 ADRs já registrados                                                     │
+   │  TOTAL:                    357 ADRs já registrados                                                     │
    └───────────────────────────────────────────────────────────┘
 ```
+
+Todos os trinta ADRs desta categoria nasceram em status **Draft**, mesmo status de todos os dez documentos produzidos pela Sprint ERP-001 (`ERP_ARCHITECTURE.md`, Nota de Posicionamento) — diferente de toda outra categoria já catalogada neste índice, cujos documentos-fonte já avançaram a Official/Frozen. Nenhum ADR desta categoria é, por isso, menos válido como decisão já tomada — Draft descreve o status de aprovação editorial do documento, nunca a validade da decisão registrada nele (Capítulo 7 deste índice); mas um Auditor que consulte esta categoria deve saber que sua promoção formal a Official, per `DOCUMENTATION_CONSTITUTION.md`, §10, ainda está pendente, mesma pendência já registrada em `ERP_001_ERP_FOUNDATION_FINAL_REVIEW.md`, item 3 (Change Requests propostas por `ERP_ARCHITECTURE.md`, Capítulo 9, nunca executadas).
 
 ---
 
@@ -599,7 +678,7 @@ O critério que determina a transição de Aceito para Substituído é sempre a 
 
 Vale notar que o estado Aceito, nesta plataforma, não é sinônimo de imutável enquanto decisão de negócio — é sinônimo de vigente enquanto registro documental. Uma Empresa específica pode, por exemplo, operar sob uma configuração que diverge de um comportamento padrão já descrito por um ADR, através do mecanismo de Feature Flag já estabelecido em `SAAS_ARCHITECTURE.md`, ADR-004, sem que isso torne o ADR original menos vigente como decisão arquitetural de referência — a exceção configurável é, ela mesma, prevista e permitida pela arquitetura, nunca uma violação silenciosa da decisão registrada.
 
-A ausência de qualquer ADR em estado Substituído, Obsoleto ou Arquivado até o momento da publicação deste índice não é acidental — ela reflete o fato de que esta série de vinte e quatro documentos foi construída de forma incremental e cuidadosa, cada novo domínio verificado contra a arquitetura já existente antes de sua publicação, conforme já exigido pelo princípio Consistency First descrito no Capítulo 3. É esperado, e não motivo de preocupação, que decisões específicas eventualmente precisem de revisão à medida que a plataforma amadurece em produção real — este índice, e o processo de evolução descrito no Capítulo 9, existem precisamente para que essa revisão futura aconteça de forma disciplinada, nunca informal.
+A ausência de qualquer ADR em estado Substituído, Obsoleto ou Arquivado até o momento da publicação deste índice não é acidental — ela reflete o fato de que esta série de trinta e dois documentos (os vinte e quatro originais mais os oito da série ERP Foundation, incorporados por DOC-001) foi construída de forma incremental e cuidadosa, cada novo domínio verificado contra a arquitetura já existente antes de sua publicação, conforme já exigido pelo princípio Consistency First descrito no Capítulo 3. É esperado, e não motivo de preocupação, que decisões específicas eventualmente precisem de revisão à medida que a plataforma amadurece em produção real — este índice, e o processo de evolução descrito no Capítulo 9, existem precisamente para que essa revisão futura aconteça de forma disciplinada, nunca informal.
 
 ---
 
@@ -625,7 +704,7 @@ O papel deste índice no processo de criação merece um esclarecimento adiciona
 
 Novas versões de um ADR nunca substituem seu texto original — cada evolução de decisão produz um novo ADR numerado sequencialmente, preservando o anterior integralmente legível em seu documento de origem.
 
-Compatibilidade entre um ADR novo e os já existentes é sempre verificada antes de sua publicação — nenhuma nova decisão é aceita se contradizer, sem justificativa explícita de substituição, uma decisão já registrada em qualquer um dos vinte e quatro documentos proprietários já catalogados.
+Compatibilidade entre um ADR novo e os já existentes é sempre verificada antes de sua publicação — nenhuma nova decisão é aceita se contradizer, sem justificativa explícita de substituição, uma decisão já registrada em qualquer um dos trinta e dois documentos proprietários já catalogados.
 
 Migração de uma decisão arquitetural anterior para uma nova, quando um ADR é substituído, é sempre acompanhada de um período de transição documentado no próprio ADR substituto, análogo ao período de transição já exigido para Breaking Changes de Evento, de Command e de Query, conforme já detalhado em `EVENT_CATALOG.md`, Capítulo 8.
 
@@ -653,7 +732,7 @@ Todo ADR possui um título que resume a decisão em uma frase, seguido de contex
 
 Nenhum ADR é registrado sem que a decisão correspondente já tenha sido efetivamente implementada ou esteja formalmente planejada para implementação.
 
-Este índice é atualizado sempre que um novo ADR é registrado em qualquer um dos vinte e quatro documentos proprietários já existentes, ou em qualquer documento futuro que venha a se somar à plataforma.
+Este índice é atualizado sempre que um novo ADR é registrado em qualquer um dos trinta e dois documentos proprietários já existentes, ou em qualquer documento futuro que venha a se somar à plataforma.
 
 Nenhuma classificação de categoria, já descrita no Capítulo 5, é aplicada a um ADR sem que esse ADR já esteja formalmente registrado em seu documento proprietário.
 
@@ -747,10 +826,10 @@ Em cada um destes doze casos, a mesma disciplina se repete: este índice é cons
 
 ## 13. Conclusão
 
-Este documento passa a ser a autoridade oficial para localização e governança de todas as trezentas e vinte e sete decisões arquiteturais já registradas pela Adaptive Business Platform. Todo novo ADR, registrado em qualquer documento proprietário existente ou futuro, deverá ser incorporado a este índice, respeitando a mesma estrutura já aplicada a cada entrada catalogada: Identificador, Documento proprietário, Status, Objetivo e Justificativa resumidos, e ADRs relacionados quando aplicável.
+Este documento passa a ser a autoridade oficial para localização e governança de todas as trezentas e cinquenta e sete decisões arquiteturais já registradas pela Adaptive Business Platform. Todo novo ADR, registrado em qualquer documento proprietário existente ou futuro, deverá ser incorporado a este índice, respeitando a mesma estrutura já aplicada a cada entrada catalogada: Identificador, Documento proprietário, Status, Objetivo e Justificativa resumidos, e ADRs relacionados quando aplicável.
 
-É fundamental reforçar que os ADRs, em seu texto completo, permanecem exclusivamente em seus documentos proprietários — `SAAS_ARCHITECTURE.md`, `AI_HUB.md`, `BUSINESS_PROFILE_ENGINE.md`, `BRANDING_HUB.md`, `AUTOMATION_ENGINE.md`, `IDENTITY_HUB.md`, `KNOWLEDGE_HUB.md`, `INTEGRATION_HUB.md`, `BUSINESS_HUB_ARCHITECTURE.md`, cada Blueprint e cada Hub dos cinco Business Hubs, e os cinco documentos de GOVERNANCE já publicados. Este documento, `ADR_INDEX.md`, é apenas o índice oficial — nunca um substituto do detalhe, do contexto e da justificativa completa que cada documento proprietário já preserva, e nunca uma autoridade paralela que compita com eles pela definição de nenhuma decisão já registrada.
+É fundamental reforçar que os ADRs, em seu texto completo, permanecem exclusivamente em seus documentos proprietários — `SAAS_ARCHITECTURE.md`, `AI_HUB.md`, `BUSINESS_PROFILE_ENGINE.md`, `BRANDING_HUB.md`, `AUTOMATION_ENGINE.md`, `IDENTITY_HUB.md`, `KNOWLEDGE_HUB.md`, `INTEGRATION_HUB.md`, `BUSINESS_HUB_ARCHITECTURE.md`, cada Blueprint e cada Hub dos cinco Business Hubs, os cinco documentos de GOVERNANCE já publicados, e os oito documentos da categoria ERP FOUNDATION (`ERP_ARCHITECTURE.md`, `SUPPLIER_HUB.md`, `PURCHASE_HUB.md`, `INVENTORY_MOVEMENT_HUB.md`, `PRODUCTION_HUB.md`, `FISCAL_HUB.md`, `FINANCIAL_HUB.md`, `ORDER_HUB.md`, incorporados por DOC-001). Este documento, `ADR_INDEX.md`, é apenas o índice oficial — nunca um substituto do detalhe, do contexto e da justificativa completa que cada documento proprietário já preserva, e nunca uma autoridade paralela que compita com eles pela definição de nenhuma decisão já registrada.
 
 Com a publicação deste índice, declara-se oficialmente consolidada a governança de decisões arquiteturais da Adaptive Business Platform. Toda futura decisão arquitetural relevante, em qualquer domínio já existente ou em qualquer domínio futuro que venha a se somar à plataforma, deverá ser registrada como ADR formal em seu documento proprietário correspondente, classificada segundo a taxonomia já estabelecida no Capítulo 5, e incorporada a este índice antes de ser considerada plenamente integrada à arquitetura oficial da plataforma.
 
-Os seis documentos de governança transversal agora completos — `DOMAIN_OWNERSHIP_MATRIX.md`, `EVENT_CATALOG.md`, `COMMAND_CATALOG.md`, `QUERY_CATALOG.md`, `EVENT_INTERACTION_MATRIX.md` e este índice — formam, juntos, a camada de referência que nenhum Blueprint ou documento de Hub individual poderia oferecer isoladamente: uma visão consolidada de propriedade, de fato, de intenção, de leitura, de comunicação e, agora, de decisão histórica, aplicável à Adaptive Business Platform inteira de uma só vez. Trezentas e vinte e sete decisões, tomadas ao longo de vinte e quatro documentos e de múltiplos domínios de negócio distintos, permanecem agora localizáveis, classificáveis e auditáveis a partir de um único ponto de entrada — o encerramento formal da disciplina de governança arquitetural que esta série de documentos construiu, decisão por decisão, desde sua primeira linha em `SAAS_ARCHITECTURE.md`.
+Os seis documentos de governança transversal agora completos — `DOMAIN_OWNERSHIP_MATRIX.md`, `EVENT_CATALOG.md`, `COMMAND_CATALOG.md`, `QUERY_CATALOG.md`, `EVENT_INTERACTION_MATRIX.md` e este índice — formam, juntos, a camada de referência que nenhum Blueprint ou documento de Hub individual poderia oferecer isoladamente: uma visão consolidada de propriedade, de fato, de intenção, de leitura, de comunicação e, agora, de decisão histórica, aplicável à Adaptive Business Platform inteira de uma só vez. Trezentas e cinquenta e sete decisões, tomadas ao longo de trinta e dois documentos e de múltiplos domínios de negócio distintos, permanecem agora localizáveis, classificáveis e auditáveis a partir de um único ponto de entrada — o encerramento formal da disciplina de governança arquitetural que esta série de documentos construiu, decisão por decisão, desde sua primeira linha em `SAAS_ARCHITECTURE.md`, incluindo a extensão ERP Foundation incorporada por DOC-001.
